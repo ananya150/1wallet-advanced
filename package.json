@@ -1,8 +1,13 @@
 {
-  "name": "1wallet-advanced",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",  "scripts": {
+  "name": "trampoline",
+  "version": "5.0.4",
+  "description": "Trampoline is a chrome extension boilerplate code to showcase your own Smart Contract Wallets",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lxieyang/chrome-extension-boilerplate-react.git"
+  },
+  "scripts": {
     "server": "node utils/webserver.js",
     "start": "QUIET=false NODE_ENV=development run-p devtools \"dev {@}\" --",
     "dev": "npx hardhat clean && npx hardhat compile && webpack --config webpack.config.js --watch",
@@ -107,11 +112,5 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1",
     "zip-webpack-plugin": "^4.0.1"
-  },
-  "keywords": [],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ananya150/1wallet-advanced"
-  },
-  "license": "ISC"
+  }
 }
