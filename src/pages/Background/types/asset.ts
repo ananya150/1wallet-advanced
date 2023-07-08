@@ -5,19 +5,19 @@
  * Note that the metadata is entirely optional.
  */
 export type AssetMetadata = {
-    logoURL?: string;
-    websiteURL?: string;
-  };
+  logoURL?: string;
+  websiteURL?: string;
+};
 
 /**
  * The name and symbol of an arbitrary asset, fungible or non-fungible,
  * alongside potential metadata about that asset.
  */
 export type Asset = {
-    symbol: string;
-    name: string;
-    metadata?: AssetMetadata;
-  };
+  symbol: string;
+  name: string;
+  metadata?: AssetMetadata;
+};
 
 /*
  * A union of all assets we expect to price.
