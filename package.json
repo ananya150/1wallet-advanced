@@ -13,7 +13,7 @@
     "dev": "npx hardhat clean && npx hardhat compile && webpack --config webpack.config.js --watch",
     "hardhat-clean-comile": "npx hardhat clean && npx hardhat compile",
     "devtools": "npx redux-devtools --hostname=localhost --port=8000 --open",
-    "build": "npx hardhat clean && npx hardhat compile && node utils/build.js",
+    "build": "node utils/build.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },
   "dependencies": {

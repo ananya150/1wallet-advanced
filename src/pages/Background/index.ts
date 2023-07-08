@@ -1,1 +1,1 @@
-console.log("Starting main service in background script but changed")
+console.log("Starting main service in background script but changed twice")
