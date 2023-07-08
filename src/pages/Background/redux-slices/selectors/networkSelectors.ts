@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-type RootState = any;
+import { RootState } from "..";
+
 
 const getNetworkState = (state: RootState) => state.network;
 

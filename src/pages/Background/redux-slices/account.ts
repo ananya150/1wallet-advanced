@@ -3,6 +3,7 @@ import { AccountBalance } from "../types/account";
 import { EVMNetwork, Network } from "../types/network";
 import { createBackgroundAsyncThunk } from "./utils";
 import { DomainName, HexString, URI } from '../types/common';
+import { RootState } from ".";
 
 
 export type AccountData = {
@@ -187,8 +188,7 @@ export const callAccountApiThunk = createBackgroundAsyncThunk(
 
 
 
-// TODO Update RootState and KeyRingService   
-type RootState = any;
+// TODO Update  KeyRingService   
 
 class KeyringService {
     public callAccountApi = (address: string, functionName: string, args?: any[]) => {

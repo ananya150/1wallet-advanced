@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-type RootState = any;
+import { RootState } from "..";
 
 const getTransactionsState = (state: RootState) => state.transactions;
 

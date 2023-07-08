@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { KeyringsState } from '../keyrings';
-type RootState = any;
+import { RootState } from "..";
 
 export const selectKeyrings = createSelector(
   (state: RootState) => state.keyrings,

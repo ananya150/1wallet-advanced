@@ -1,8 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { HexString } from '../../types/common';
 import { DappPermissionState } from '../permissions';
+import { RootState } from "..";
 
-type RootState = any;
 const getDappPermissionState = (state: RootState) => state.dappPermissions;
 
 export const selectPermissionRequests = createSelector(

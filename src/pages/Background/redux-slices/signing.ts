@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { EVMNetwork, AddressOnNetwork } from "../types/network";
 import { HexString } from "../types/common";
 import { createBackgroundAsyncThunk } from "./utils";
+import { RootState } from ".";
 
 export type Vault = {
     vault: string;
@@ -194,7 +195,7 @@ export const {
   
 export default signingSlice.reducer;
 
-// TODO replace KeyringService  ProviderBridgeService typeroot
+// TODO replace KeyringService  ProviderBridgeService
 class KeyringService {
     public createPassword = (password: any) => {}
     public addAccount = (implementation: any, context: any) => {return ''}
@@ -205,7 +206,6 @@ class ProviderBridgeService {
     public grantPermission = (newPermission: any) => {}
     public resolveRequest = (para1?: string, signedMessage?: any) => {}
 }
-type RootState = any;
 
 
 export const getSignedData = createBackgroundAsyncThunk(

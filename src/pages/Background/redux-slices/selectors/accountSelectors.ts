@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from "..";
 
-type RootState = any;
 const getAccountState = (state: RootState) => state.account;
 
 export const getAllAddresses = createSelector(getAccountState, (account) => {

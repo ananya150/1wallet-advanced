@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type {  BigNumberish, BytesLike } from "ethers";
 import { AccessListish } from 'ethers/lib/utils.js';
 import { createBackgroundAsyncThunk } from "./utils";
+import { RootState } from ".";
 
 export type EthersTransactionRequest = {
     to: string;
@@ -190,7 +191,7 @@ export const {
   
 export default transactionsSlice.reducer;
 
-// TODO replace KeyringService  ProviderBridgeService typeroot
+// TODO replace KeyringService  ProviderBridgeService
 class KeyringService {
     public createPassword = (password: any) => {}
     public addAccount = (implementation: any, context: any) => {return ''}
@@ -207,8 +208,6 @@ class ProviderBridgeService {
     public resolveRequest = (para1?: string, signedMessage?: any) => {}
     public rejectRequest = (para1?: string, para2?: any) => {}
 }
-type RootState = any;
-
 
 export const createUnsignedUserOp = createBackgroundAsyncThunk(
     'transactions/createUnsignedUserOp',
