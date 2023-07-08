@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AccountBalance } from "../types/account";
-import { EVMNetwork, Network } from "../types/network";
+import { EVMNetwork } from "../types/network";
 import { createBackgroundAsyncThunk } from "./utils";
 import { DomainName, HexString, URI } from '../types/common';
 import { RootState } from ".";
