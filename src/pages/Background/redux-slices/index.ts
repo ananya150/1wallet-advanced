@@ -11,8 +11,7 @@ import { allAliases } from './utils';
 import { encodeJSON } from '../utils';
 import Config from '../../../exconfig';
 import { debounce } from '@mui/material';
-
-type MainServiceManager = any;
+import MainServiceManager from '../services/main';
 
 const rootReducer = combineReducers({
     account,

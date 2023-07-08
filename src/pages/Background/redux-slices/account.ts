@@ -4,6 +4,7 @@ import { EVMNetwork } from "../types/network";
 import { createBackgroundAsyncThunk } from "./utils";
 import { DomainName, HexString, URI } from '../types/common';
 import { RootState } from ".";
+import KeyringService from "../services/keyring";
 
 
 export type AccountData = {
@@ -185,16 +186,3 @@ export const callAccountApiThunk = createBackgroundAsyncThunk(
     dispatch(accountSlice.actions.setAccountApiCallResultState('set'));
   }
 );
-
-
-
-// TODO Update  KeyRingService   
-
-class KeyringService {
-    public callAccountApi = (address: string, functionName: string, args?: any[]) => {
-
-    }
-    public getAccountData =  async(address: string, activeNetwork: any) => {
-        return {}
-    }
-} 

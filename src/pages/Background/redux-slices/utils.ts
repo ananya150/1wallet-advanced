@@ -7,6 +7,7 @@ import {
     createAsyncThunk,
     Dispatch
   } from '@reduxjs/toolkit';
+  import MainServiceManager from '../services/main';
 
 export const allAliases: Record<
     string, (action: {
@@ -45,9 +46,6 @@ export interface AsyncThunkConfig {
     rejectValue?: unknown;
   }
   
-
-//TODO Added MainServiceManager to extra ThunkApiConfig.
-type MainServiceManager = any;
 
   /*
   * Create an async thunk action that will always run in the background script,

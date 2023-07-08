@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createBackgroundAsyncThunk } from "./utils";
+import ProviderBridgeService from "../services/provider-bridge";
 
 export type PermissionRequest = {
     key: string;
@@ -104,13 +105,6 @@ const dappPermissionSlice = createSlice<
 
 export const { requestPermission } = dappPermissionSlice.actions;
 export default dappPermissionSlice.reducer;
-
-// TODO import ProviderBridgeService
-
-class ProviderBridgeService {
-    public denyOrRevokePermission = (newPermission: any) => {}
-    public grantPermission = (newPermission: any) => {}
-}
 
 export const denyOrRevokePermission = createBackgroundAsyncThunk(
     'dapp-permission/denyOrRevokePermission',

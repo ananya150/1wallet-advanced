@@ -3,6 +3,8 @@ import type {  BigNumberish, BytesLike } from "ethers";
 import { AccessListish } from 'ethers/lib/utils.js';
 import { createBackgroundAsyncThunk } from "./utils";
 import { RootState } from ".";
+import ProviderBridgeService from "../services/provider-bridge";
+import KeyringService from "../services/keyring";
 
 export type EthersTransactionRequest = {
     to: string;
@@ -190,24 +192,6 @@ export const {
   } = transactionsSlice.actions;
   
 export default transactionsSlice.reducer;
-
-// TODO replace KeyringService  ProviderBridgeService
-class KeyringService {
-    public createPassword = (password: any) => {}
-    public addAccount = (implementation: any, context: any) => {return ''}
-    public personalSign = (activeAccount: string, context: any , pendingSigningDataRequest: any) => {return ''}
-    public createUnsignedUserOp = (address: any, transactionRequest: any, context: any) => 
-    {
-        const a: any = null
-        return a
-    }
-}
-class ProviderBridgeService {
-    public denyOrRevokePermission = (newPermission: any) => {}
-    public grantPermission = (newPermission: any) => {}
-    public resolveRequest = (para1?: string, signedMessage?: any) => {}
-    public rejectRequest = (para1?: string, para2?: any) => {}
-}
 
 export const createUnsignedUserOp = createBackgroundAsyncThunk(
     'transactions/createUnsignedUserOp',

@@ -3,6 +3,8 @@ import { EVMNetwork, AddressOnNetwork } from "../types/network";
 import { HexString } from "../types/common";
 import { createBackgroundAsyncThunk } from "./utils";
 import { RootState } from ".";
+import ProviderBridgeService from "../services/provider-bridge";
+import KeyringService from "../services/keyring";
 
 export type Vault = {
     vault: string;
@@ -15,20 +17,20 @@ export type Vault = {
     supportedNetworks: Array<EVMNetwork>;
   };
 
-  const Mumbai : EVMNetwork = {
-    chainID: '80001',
-    family: 'EVM',
-    name: 'PolygonMumbai',
-    provider: 'https://polygon-mumbai.g.alchemy.com/v2/Rq-2QXv6NLd6BOUk4xBV5N_Vyo-Wbo2r',
-    entryPointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-    bundler: 'https://api.stackup.sh/v1/node/feb28026c6e152e84625a0c87bb39ab9db60f7c27e2dbc4b1eaa69414a9a489d',
-    baseAsset: {
-        name: 'MATIC',
-        symbol: 'MATIC',
-        decimals: 18,
-        image: 'https://en.wikipedia.org/wiki/Polygon_%28blockchain%29#/media/File:Polygon_Blockchain_Matic_Logo.svg'
-    }
-}
+//   const Mumbai : EVMNetwork = {
+//     chainID: '80001',
+//     family: 'EVM',
+//     name: 'PolygonMumbai',
+//     provider: 'https://polygon-mumbai.g.alchemy.com/v2/Rq-2QXv6NLd6BOUk4xBV5N_Vyo-Wbo2r',
+//     entryPointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+//     bundler: 'https://api.stackup.sh/v1/node/feb28026c6e152e84625a0c87bb39ab9db60f7c27e2dbc4b1eaa69414a9a489d',
+//     baseAsset: {
+//         name: 'MATIC',
+//         symbol: 'MATIC',
+//         decimals: 18,
+//         image: 'https://en.wikipedia.org/wiki/Polygon_%28blockchain%29#/media/File:Polygon_Blockchain_Matic_Logo.svg'
+//     }
+// }
 
 export type EIP712DomainType = {
     name?: string;
@@ -194,19 +196,6 @@ export const {
   } = signingSlice.actions;
   
 export default signingSlice.reducer;
-
-// TODO replace KeyringService  ProviderBridgeService
-class KeyringService {
-    public createPassword = (password: any) => {}
-    public addAccount = (implementation: any, context: any) => {return ''}
-    public personalSign = (activeAccount: string, context: any , pendingSigningDataRequest: any) => {return ''}
-}
-class ProviderBridgeService {
-    public denyOrRevokePermission = (newPermission: any) => {}
-    public grantPermission = (newPermission: any) => {}
-    public resolveRequest = (para1?: string, signedMessage?: any) => {}
-}
-
 
 export const getSignedData = createBackgroundAsyncThunk(
     'signing/getSignedData',

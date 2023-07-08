@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Keyring, KeyringMetadata } from "../types/keyring";
 import { createBackgroundAsyncThunk } from "./utils";
 import { addNewAccount } from "./account";
+import KeyringService from "../services/keyring";
 
 export type Vault = {
     vault: string;
@@ -76,12 +77,6 @@ export default keyringsSlice.reducer;
  * Background Actions
  * -------------------------------
  */
-
-// TODO replace KeyringService class
-class KeyringService {
-    public createPassword = (password: any) => {}
-    public addAccount = (implementation: any, context: any) => {return ''}
-}
 
 export const initializeKeyring = createBackgroundAsyncThunk(
     'keyring/initialize',
