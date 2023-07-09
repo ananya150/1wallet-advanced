@@ -50,6 +50,7 @@
     "redux-persist": "^6.0.0",
     "siwe": "^1.1.6",
     "ssestream": "^1.1.0",
+    "userop": "^0.3.1",
     "uuid": "^9.0.0",
     "wagmi": "^0.11.3",
     "webext-redux": "^2.1.9",
