@@ -13,7 +13,7 @@
     "dev": "npx hardhat clean && npx hardhat compile && webpack --config webpack.config.js --watch",
     "hardhat-clean-comile": "npx hardhat clean && npx hardhat compile",
     "devtools": "npx redux-devtools --hostname=localhost --port=8000 --open",
-    "build": "node utils/build.js",
+    "build": "npx hardhat clean && npx hardhat compile && node utils/build.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },
   "dependencies": {
@@ -73,7 +73,6 @@
     "@types/mocha": "^10.0.1",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "@types/webextension-polyfill": "^0.10.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^9.1.2",
     "babel-preset-react-app": "^10.0.1",

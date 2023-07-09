@@ -1,3 +1,1 @@
-import startMain from "./main";
-console.log("This is background script. Starting")
-startMain();
+console.log("Starting main service in background script but changed")

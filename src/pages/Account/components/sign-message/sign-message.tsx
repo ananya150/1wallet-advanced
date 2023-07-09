@@ -10,7 +10,7 @@ import React from 'react';
 const SignMessage = ({
   onComplete,
 }: {
-  onComplete: (context?: any) => void;
+  onComplete: (context: any) => void;
 }) => {
   return (
     <>

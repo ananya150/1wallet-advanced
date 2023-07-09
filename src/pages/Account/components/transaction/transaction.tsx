@@ -7,12 +7,12 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import EthersTransactionRequest  from '../../../Background/services/provider-bridge';
+import { EthersTransactionRequest } from '../../../Background/services/provider-bridge';
 import { TransactionComponentProps } from '../types';
 
 const Transaction = ({
   transaction,
-  // onComplete,
+  onComplete,
   onReject,
 }: TransactionComponentProps) => {
   const [loader, setLoader] = React.useState<boolean>(false);
@@ -45,7 +45,7 @@ const Transaction = ({
             size="large"
             variant="contained"
             onClick={() => {
-              // onComplete(transaction, undefined);
+              onComplete(transaction, undefined);
               setLoader(true);
             }}
           >

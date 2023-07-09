@@ -50,7 +50,7 @@ es.addEventListener(
             action: 'reload-yourself',
           },
           (res) => {
-            if (chrome.runtime.lastError && !res) return;
+            if (chrome.runtime.lastError && !res) return true;
 
             const { from, action } = res;
             if (from === 'contentScriptClient' && action === 'yes-sir') {
@@ -58,6 +58,7 @@ es.addEventListener(
               logger('extension will reload to update content scripts...');
               chrome.runtime.reload();
             }
+            return true
           }
         );
       });

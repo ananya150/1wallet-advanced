@@ -32,7 +32,7 @@ const TransactionConfirmationComponent: TransactionConfirmation = ({
 }: TransactionConfirmationtProps) => {
   const activeAccount = useBackgroundSelector(getActiveAccount);
   const activeNetwork = useBackgroundSelector(getActiveNetwork);
-  const accountInfo = useBackgroundSelector((state: any) =>
+  const accountInfo = useBackgroundSelector((state) =>
     getAccountInfo(state, activeAccount)
   );
 
@@ -40,7 +40,7 @@ const TransactionConfirmationComponent: TransactionConfirmation = ({
     selectCurrentPendingSendTransactionRequest
   );
 
-  const originPermission = useBackgroundSelector((state: any) =>
+  const originPermission = useBackgroundSelector((state) =>
     selectCurrentOriginPermission(state, {
       origin: sendTransactionRequest?.origin || '',
       address: activeAccount || '',
