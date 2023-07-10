@@ -6,21 +6,45 @@ import IconButton from '@mui/material/IconButton';
 import { logout } from '../utils/web3authUtils';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography'
+import { getKey } from '../utils/ethUtils';
+import { deriveEncryptionKey, encryptPrivateKey, hashPassword } from '../utils/cryptoUtils';
+import { useNavigate } from 'react-router-dom';
 
 
-const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn}: any) => {
+const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}: any) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [err, setErr] = useState(false)
+  const [err, setErr] = useState<any>(null)
 
   const logoutWeb3Auth = async () => {
     await logout(web3Auth);
     setIsLoggedIn(false);
   }
 
+  const navigate = useNavigate();
+
   const confirm = async () => {
-    setErr(false);
-    if(password !== confirmPassword) setErr(true);
+    setErr(null);
+    if(password !== confirmPassword){
+      setErr('Passwords do not match');
+      return;
+    }
+    const key = await getKey(provider);
+    const passwordHash = await hashPassword(password);
+    const aesKey = await deriveEncryptionKey(password);
+    const encryptedSigningKey = await encryptPrivateKey(aesKey, key);
+    console.log("sending message")
+    chrome.runtime.sendMessage({header: "setVault/init", params: {encryptedKey: encryptedSigningKey, walletAddress: walletAddress , passwordHash: passwordHash, name:name}} , function(response){
+      if(response.message){
+        navigate('/home')
+      } 
+      else {
+        setErr('Some Error Occured while setting up')
+        setConfirmPassword('')
+        setPassword('')
+        return;
+      }
+    }) 
   }
 
   return (
@@ -46,7 +70,7 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn}: any) => {
           err && 
             <div style={{display: 'flex', justifyContent: 'center', marginTop:'10px'}}>
               <Typography fontSize='11px' color={password === confirmPassword? 'green': 'red'}>
-                {password === confirmPassword? 'Passwords match': 'Passwords do not match'}
+                {password === confirmPassword? 'Passwords match': err}
               </Typography>
             </div>
         }

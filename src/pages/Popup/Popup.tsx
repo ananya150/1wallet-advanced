@@ -27,7 +27,8 @@ const Popup = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<any>(false)
   const [web3Auth, setWeb3Auth] = useState<any>(null);
   const [provider, setProvider] = useState<any>(null);
-  const [name,setName] = useState<any>('')
+  const [name,setName] = useState<any>('');
+  const [walletAddress, setWalletAddress] = useState<any>('')
 
   const initializeWeb3Auth = async () => {
     const initValues = await init();
@@ -69,9 +70,9 @@ const Popup = () => {
               <div>
                 <Routes>
                   <Route path='/' element={
-                    !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} provider={provider} setName={setName} /> 
+                    !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} provider={provider} setName={setName} walletAddress={walletAddress} setWalletAddress={setWalletAddress} /> 
                   } />
-                  <Route path="/setUpPassword" element={<SetUpPassword provider={provider} name={name} web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} />} />
+                  <Route path="/setUpPassword" element={<SetUpPassword provider={provider} name={name} web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} walletAddress={walletAddress} />} />
                 </Routes>
               </div>
             }

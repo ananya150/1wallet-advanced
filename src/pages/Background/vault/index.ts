@@ -23,14 +23,17 @@ export class Vault {
 
     private isInitialized: boolean;
     private walletAddress: string | null ;
+    private passwordHash: any | null;
     private encryptedSigningKey: any | null;
-
+    private name: string ;
     private chain: NetworkConfig;
 
     constructor () {
         this.isInitialized = false;
         this.walletAddress = null;
         this.encryptedSigningKey = null;
+        this.passwordHash = null;
+        this.name = ''
         this.chain = polygonMumbai;
     }
 
@@ -38,10 +41,12 @@ export class Vault {
         return this.isInitialized;
     }
 
-    public init (encryptedKey: any , walletAddress: string){
+    public init (encryptedKey: any , walletAddress: string , passwordHash: any, name:string){
         this.isInitialized = true;
         this.encryptedSigningKey = encryptedKey;
         this.walletAddress = walletAddress;
+        this.passwordHash = passwordHash;
+        this.name = name;
     }
 
     public updateSigner(newEncryptedSigner: string){
@@ -52,6 +57,7 @@ export class Vault {
         this.isInitialized = false;
         this.encryptedSigningKey = null;
         this.walletAddress = null;
+        this.passwordHash = null;
     }
     
     public async callContract(decryptionKey: any, functionSelector: SimpleAccountFuctions , params: FucntionParams<typeof functionSelector> ) {

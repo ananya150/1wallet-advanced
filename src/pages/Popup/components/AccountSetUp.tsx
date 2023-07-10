@@ -63,13 +63,11 @@ const initialState={
   hasCompleted: false
 }
 
-const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName}: any) => {
+const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress, setWalletAddress}: any) => {
   const classes = useStyles();
   const [walletFound, setWalletFound] = useState(false);
   const [isFullPage, setIsFullPage] = useState(false); 
   const [loading, setLoading] = useState(true);
-
-  const [walletAddress, setWalletAddress] = useState<any>(null);
 
   const [accountSetUpState, setAccountSetUpState] = useState<AccountSetUpState>(initialState)
   const [inputValue, setInputValue] = useState('');
