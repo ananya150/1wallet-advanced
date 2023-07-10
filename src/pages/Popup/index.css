@@ -62,6 +62,16 @@ code {
   letter-spacing: 0.07em;
 }
 
+.loginbody {
+  display: flex;
+  justify-content: center;
+  color: #fefdf9;
+  margin-top: 20px;
+  font-size: 35px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+}
+
 .signUpBody1 {
   display: flex;
   justify-content: center;

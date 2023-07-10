@@ -14,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}: any) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [err, setErr] = useState<any>(null)
+  const [err, setErr] = useState<any>(null);
+  const [loading,setLoading] = useState(false);
 
   const logoutWeb3Auth = async () => {
     await logout(web3Auth);
@@ -29,6 +30,7 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
       setErr('Passwords do not match');
       return;
     }
+    setLoading(true);
     const key = await getKey(provider);
     const passwordHash = await hashPassword(password);
     const aesKey = await deriveEncryptionKey(password);
@@ -36,12 +38,19 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
     console.log("sending message")
     chrome.runtime.sendMessage({header: "setVault/init", params: {encryptedKey: encryptedSigningKey, walletAddress: walletAddress , passwordHash: passwordHash, name:name}} , function(response){
       if(response.message){
+        chrome.storage.local.set({isPasswordEntered: true});
+        chrome.storage.local.set({'aeskey': aesKey });
+
+        // fetch data and store in redux store
+
+        setLoading(false);
         navigate('/home')
       } 
       else {
-        setErr('Some Error Occured while setting up')
-        setConfirmPassword('')
-        setPassword('')
+        setErr('Some Error Occured while setting up');
+        setConfirmPassword('');
+        setPassword('');
+        setLoading(false);
         return;
       }
     }) 

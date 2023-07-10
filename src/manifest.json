@@ -19,5 +19,9 @@
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
       "js": ["ex_contentScript.bundle.js"]
     }
-  ]
+  ],
+	"permissions": [
+		"storage",
+		"alarms"
+	  ]
 }

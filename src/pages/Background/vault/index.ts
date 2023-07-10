@@ -41,6 +41,10 @@ export class Vault {
         return this.isInitialized;
     }
 
+    get passdHash() {
+        return this.passwordHash;
+    }
+
     public init (encryptedKey: any , walletAddress: string , passwordHash: any, name:string){
         this.isInitialized = true;
         this.encryptedSigningKey = encryptedKey;

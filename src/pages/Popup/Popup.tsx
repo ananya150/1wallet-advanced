@@ -73,6 +73,7 @@ const Popup = () => {
                     !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} provider={provider} setName={setName} walletAddress={walletAddress} setWalletAddress={setWalletAddress} /> 
                   } />
                   <Route path="/setUpPassword" element={<SetUpPassword provider={provider} name={name} web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} walletAddress={walletAddress} />} />
+                  <Route path='/home' element={<Home/>} />
                 </Routes>
               </div>
             }
