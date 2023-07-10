@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 const theme = createTheme({
@@ -59,11 +58,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PasswordMatchComponent = () => {
+const PasswordMatchComponent = ({password, setPassword, confirmPassword, setConfirmPassword}: any) => {
   const firstTextFieldRef = useRef<any>(null);
   const classes = useStyles();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handlePasswordChange = (event: any) => {
     setPassword(event.target.value);
@@ -83,55 +80,59 @@ const PasswordMatchComponent = () => {
 
   return (
     <div style={{margin:'auto'}}>
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
-        fullWidth
-        className={classes.input}
-        style={{ width: '250px', borderRadius: '120px', background:'#181818' }} size="small"
-        margin="normal"
-        InputLabelProps={{
-            style: {
-                color: theme.palette.text.primary,
-              },
-            }}
-            InputProps={{
-              style: {
-                color: theme.palette.text.primary,
-              },
-            }}
-        inputRef={firstTextFieldRef}
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+            <TextField
+                label="Password"
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                fullWidth
+                className={classes.input}
+                style={{ width: '250px', borderRadius: '120px', background:'#181818' }} size="small"
+                margin="normal"
+                InputLabelProps={{
+                    style: {
+                        color: theme.palette.text.primary,
+                    },
+                    }}
+                    InputProps={{
+                    style: {
+                        color: theme.palette.text.primary,
+                    },
+                    }}
+                inputRef={firstTextFieldRef}
 
-      />
-      <TextField
-        label="Confirm Password"
-        type="password"
-        value={confirmPassword}
-        onChange={handleConfirmPasswordChange}
-        fullWidth
-        margin="normal"
-        style={{ width: '250px', borderRadius: '120px' }} size="small"
-        className={
-          confirmPassword.length > 0
-            ? passwordsMatch
-              ? classes.match
-              : classes.mismatch
-            : classes.input
-        }
-        error={confirmPassword.length > 0 && !passwordsMatch}
-        InputLabelProps={{
-            style: {
-                color: theme.palette.text.primary,
-              },
-            }}
-            InputProps={{
-              style: {
-                color: theme.palette.text.primary,
-              },
-            }}
-      />
+            />
+        </div>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+            <TextField
+                label="Confirm Password"
+                type="password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                fullWidth
+                margin="normal"
+                style={{ width: '250px', borderRadius: '120px' }} size="small"
+                className={
+                confirmPassword.length > 0
+                    ? passwordsMatch
+                    ? classes.match
+                    : classes.mismatch
+                    : classes.input
+                }
+                error={confirmPassword.length > 0 && !passwordsMatch}
+                InputLabelProps={{
+                    style: {
+                        color: theme.palette.text.primary,
+                    },
+                    }}
+                    InputProps={{
+                    style: {
+                        color: theme.palette.text.primary,
+                    },
+                    }}
+            />
+        </div>
       {/* {confirmPassword.length > 0 && (
         <Typography color={passwordsMatch ? 'green' : 'red'}>
           {passwordsMatch ? 'Passwords match' : 'Passwords do not match'}
