@@ -68,7 +68,7 @@ const Popup = () => {
               <div>
                 <Routes>
                   <Route path='/' element={
-                    !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} /> 
+                    !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} provider={provider} /> 
                   } />
                 </Routes>
               </div>

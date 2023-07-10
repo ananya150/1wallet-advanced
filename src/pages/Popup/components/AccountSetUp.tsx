@@ -10,6 +10,9 @@ import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
+import { getAccount } from '../utils/ethUtils';
+import { SimpleAccountFactory, SimpleAccount } from '../utils/simpleAccount/simpleAccountUtils';
+
 
 
 const theme = createTheme({
@@ -61,11 +64,11 @@ const initialState={
   hasCompleted: false
 }
 
-const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
+const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
   const classes = useStyles();
   const [walletFound, setWalletFound] = useState(false);
   const [isFullPage, setIsFullPage] = useState(false); 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [walletName, setWalletName] = useState<any>(null);
   const [walletAddress, setWalletAddress] = useState<any>(null);
@@ -75,7 +78,23 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
   const [error, setError] = useState(false);
 
   const initialize = async () => {
-
+    try{
+      const address = await getAccount(provider);
+      const factory = new SimpleAccountFactory(address);
+      const isFound = await factory.found();
+      const walletAddress = await factory.getWalletAddress();
+      setWalletAddress(walletAddress);
+      if(isFound){
+        const name = await factory.getName();
+        setWalletFound(true);
+        setWalletName(name);
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+    }catch(e){
+      console.log(e)
+    }
   }
 
   const handleChange = (event: any) => {
@@ -114,6 +133,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
 
   useEffect(() => {
     if (window.innerWidth > 400) setIsFullPage(true);
+    initialize();
   }, [])
 
   const loader = (
