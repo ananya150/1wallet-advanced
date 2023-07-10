@@ -18,10 +18,10 @@ code {
 }
 
 .container {
-  width: 357px;
+  width: 365px;
   height: 500px;
-  min-width: 357px;
-  max-width: 357px;
+  min-width: 365px;
+  max-width: 365px;
   overflow: hidden;
   margin: auto;
 }
@@ -48,10 +48,14 @@ code {
   margin-top: 50px;
 }
 
+.accountSetUpconLogo {
+  margin-top: 20px;
+}
+
 .signUpBody0 {
   display: flex;
   justify-content: center;
-  color: #e4ccff;
+  color: #fefdf9;
   margin-top: 30px;
   font-size: 35px;
   font-weight: 600;
@@ -75,4 +79,44 @@ code {
   font-size: 17px;
   font-weight: 500;
   letter-spacing: 0.02em;
+}
+
+.fullPageWarn {
+  display: flex;
+  align: center;
+  margin-top: 230px;
+  font-size: 20px;
+  color: white;
+}
+
+.accountSetupHeading0 {
+  display: flex;
+  justify-content: center;
+  color: #fefdf9;
+  margin-top: 70px;
+  font-size: 35px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+}
+
+.accountSetUpHeading1 {
+  text-align: center;
+  color: #fefdf9;
+  margin-top: 40px;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 5px 10px;
+  line-height: 1.6;
+}
+
+.signoutButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.accountSetUpButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 110px;
 }

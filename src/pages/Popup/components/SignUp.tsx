@@ -1,21 +1,13 @@
 import React,{useState , useEffect} from 'react'
 import { login } from '../utils/web3authUtils';
-import { makeStyles } from '@mui/styles';
 import namedLogo from '../namedLogo.png';
 import iconLogo from '../iconLogo2.png';
 import Button from "@mui/material/Button"
 
-const useStyles = makeStyles(() => ({
-  customButton: {
-    backgroundColor: '#bb80fe',
-    color: '#fefdf9',
-  },
-}));
 
 const SignUp = ({web3Auth, setProvider , setIsLoggedIn}: any) => {
 
   const [isFullPage, setIsFullPage] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     if (window.innerWidth > 400) setIsFullPage(true);

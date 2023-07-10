@@ -54,12 +54,10 @@ export const login = async (web3auth: any) => {
     return web3authProvider;
   };
 
-export  const logout = async (web3auth: any, setProvider: any, setLoggedIn: any) => {
+export  const logout = async (web3auth: any) => {
     if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
     await web3auth.logout();
-    setProvider(null);
-    setLoggedIn(false);
   };
