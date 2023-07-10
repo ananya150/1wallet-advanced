@@ -3121,6 +3121,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/styles@npm:^5.13.7":
+  version: 5.13.7
+  resolution: "@mui/styles@npm:5.13.7"
+  dependencies:
+    "@babel/runtime": ^7.22.5
+    "@emotion/hash": ^0.9.1
+    "@mui/private-theming": ^5.13.7
+    "@mui/types": ^7.2.4
+    "@mui/utils": ^5.13.7
+    clsx: ^1.2.1
+    csstype: ^3.1.2
+    hoist-non-react-statics: ^3.3.2
+    jss: ^10.10.0
+    jss-plugin-camel-case: ^10.10.0
+    jss-plugin-default-unit: ^10.10.0
+    jss-plugin-global: ^10.10.0
+    jss-plugin-nested: ^10.10.0
+    jss-plugin-props-sort: ^10.10.0
+    jss-plugin-rule-value-function: ^10.10.0
+    jss-plugin-vendor-prefixer: ^10.10.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: f48f7bf809c4276849f7a978ddf5cd65cbfe84ab6d9bc1b7522e2c728f23f09eeae7b7d3735926f700c00552138d5d30c437b75f067b367b8985ac35213040d7
+  languageName: node
+  linkType: hard
+
 "@mui/system@npm:^5.13.7":
   version: 5.13.7
   resolution: "@mui/system@npm:5.13.7"
@@ -13801,7 +13832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-camel-case@npm:10.10.0":
+"jss-plugin-camel-case@npm:10.10.0, jss-plugin-camel-case@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-camel-case@npm:10.10.0"
   dependencies:
@@ -13823,7 +13854,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-default-unit@npm:10.10.0":
+"jss-plugin-default-unit@npm:10.10.0, jss-plugin-default-unit@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-default-unit@npm:10.10.0"
   dependencies:
@@ -13854,7 +13885,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-global@npm:10.10.0":
+"jss-plugin-global@npm:10.10.0, jss-plugin-global@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-global@npm:10.10.0"
   dependencies:
@@ -13864,7 +13895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-nested@npm:10.10.0":
+"jss-plugin-nested@npm:10.10.0, jss-plugin-nested@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-nested@npm:10.10.0"
   dependencies:
@@ -13875,7 +13906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-props-sort@npm:10.10.0":
+"jss-plugin-props-sort@npm:10.10.0, jss-plugin-props-sort@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-props-sort@npm:10.10.0"
   dependencies:
@@ -13885,7 +13916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-rule-value-function@npm:10.10.0":
+"jss-plugin-rule-value-function@npm:10.10.0, jss-plugin-rule-value-function@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-rule-value-function@npm:10.10.0"
   dependencies:
@@ -13918,7 +13949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-vendor-prefixer@npm:10.10.0":
+"jss-plugin-vendor-prefixer@npm:10.10.0, jss-plugin-vendor-prefixer@npm:^10.10.0":
   version: 10.10.0
   resolution: "jss-plugin-vendor-prefixer@npm:10.10.0"
   dependencies:
@@ -13951,7 +13982,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss@npm:10.10.0, jss@npm:^10.9.2":
+"jss@npm:10.10.0, jss@npm:^10.10.0, jss@npm:^10.9.2":
   version: 10.10.0
   resolution: "jss@npm:10.10.0"
   dependencies:
@@ -19431,6 +19462,7 @@ __metadata:
     "@metamask/browser-passworder": ^4.0.2
     "@mui/icons-material": ^5.13.7
     "@mui/material": ^5.13.7
+    "@mui/styles": ^5.13.7
     "@nomicfoundation/hardhat-chai-matchers": ^1.0.6
     "@nomicfoundation/hardhat-network-helpers": ^1.0.8
     "@nomicfoundation/hardhat-toolbox": ^2.0.1
