@@ -120,3 +120,21 @@ code {
   justify-content: center;
   margin-top: 110px;
 }
+
+.accountSetUpButton1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.accountSetUpInputField {
+  display: flex;
+  justify-content: center;
+  margin-top: 90px;
+}
+
+.nameError {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}

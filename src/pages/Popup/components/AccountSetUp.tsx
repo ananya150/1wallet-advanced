@@ -5,7 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import iconLogo from "../iconLogo2.png"
 import namedLogo from "../namedLogo.png"
 import { logout } from '../utils/web3authUtils';
-import Button from "@mui/material/Button"
+import Button from "@mui/material/Button";
+import TextField from '@mui/material/TextField';
+import { createTheme } from '@mui/material/styles';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#767675', // Replace with your desired primary color
+    },
+    text: {
+      primary: '#767675', // Replace with your desired text color
+    },
+  },
+});
+
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -14,27 +31,84 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     height: '100vh', // Adjust this value as per your requirement
   },
+  input: {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#676766', // Replace with your desired border color
+      },
+      '&:hover fieldset': {
+        borderColor: '#676766', // Replace with your desired hover border color
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#676766', // Replace with your desired focused border color
+      },
+      '& input': {
+        color: '#FFFFFF', // Replace with your desired text color
+      },
+    },
+  },
 }));
+
+type AccountSetupState = {
+  hasStarted: boolean;
+  hasStartedDeploying: boolean;
+  hasCompleted: boolean;
+}
+
+const initialState={
+  hasStarted: false,
+  hasStartedDeploying: false,
+  hasCompleted: false
+}
 
 const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
   const classes = useStyles();
-  const [walletFound, setWalletFound] = useState(true);
+  const [walletFound, setWalletFound] = useState(false);
   const [isFullPage, setIsFullPage] = useState(false); 
   const [loading, setLoading] = useState(false);
 
   const [walletName, setWalletName] = useState<any>(null);
   const [walletAddress, setWalletAddress] = useState<any>(null);
 
+  const [accountSetupState, setAccountSetupState] = useState<AccountSetupState>(initialState)
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState(false);
+
   const initialize = async () => {
 
   }
+
+  const handleChange = (event: any) => {
+    setInputValue(event.target.value);
+    setError(false);
+  };
 
   const logoutWeb3Auth = async () => {
     await logout(web3Auth);
     setIsLoggedIn(false);
   }
 
-  const continueSetup = () => {
+  const startSetup = () => {
+    setAccountSetupState(prevState => ({
+      ...prevState , hasStarted: true
+    }));
+
+  }
+
+  const deployAccount = async (event: any) => {
+    event.preventDefault();
+
+    if (inputValue.trim() === '') {
+      setError(true);
+    } else {
+      // Handle form submission
+      console.log('Input value:', inputValue);
+      setInputValue('')
+    }
+
+  }
+
+  const setUpPassword = () => {
 
   }
 
@@ -56,7 +130,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
         Accout Found!
       </div>
       <div className='accountSetUpHeading1'>
-        We could not find any account linked to your email Address.
+        We found an account with the name <u><b>{walletName}</b></u> linked to your current e-mail
       </div>
       <div className='accountSetUpButton'>
         <Button variant='contained' sx={{
@@ -65,7 +139,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
             ':hover': {
               bgcolor: '#a873e5',
             },      
-            }} onClick={continueSetup}>Create Account</Button>
+            }} onClick={setUpPassword}>Setup Password</Button>
       </div>
     </div>
   )
@@ -75,17 +149,79 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
       <div className='accountSetupHeading0'>
         Accout not Found
       </div>
-      <div className='accountSetUpHeading1'>
-        We could not find any account linked to your email Address.
-      </div>
-      <div className='accountSetUpButton'>
-        <Button variant='contained' sx={{
-            backgroundColor: "#9666cb",
-            borderRadius: '10px',
-            ':hover': {
-              bgcolor: '#a873e5',
-            },      
-            }} onClick={continueSetup}>Create Account</Button>
+      <div>
+        {
+          !accountSetupState.hasStarted && 
+          <div>
+            <div className='accountSetUpHeading1'>
+              We could not find any account linked to your email Address.
+            </div>
+            <div className='accountSetUpButton'>
+              <Button variant='contained' sx={{
+                  backgroundColor: "#9666cb",
+                  borderRadius: '10px',
+                  ':hover': {
+                    bgcolor: '#a873e5',
+                  },      
+                  }} onClick={startSetup}>Create Account</Button>
+            </div>
+          </div>
+        }
+        {
+          accountSetupState.hasStarted && !accountSetupState.hasStartedDeploying && 
+          <div>
+            <div className='accountSetUpHeading1'>
+              Choose a <b>Name</b> for your account
+            </div>
+            <form onSubmit={deployAccount}>
+              <div className='accountSetUpInputField'>
+                <TextField value={inputValue} onChange={handleChange} fullWidth label="name" id="name" size="small" style={{ width: '250px', borderRadius: '120px' }} className={classes.input} InputLabelProps={{
+                style: {
+                    color: theme.palette.text.primary,
+                  },
+                }}
+                InputProps={{
+                  style: {
+                    color: theme.palette.text.primary,
+                  },
+                }}
+               />
+              </div>
+                {error && (
+                  <FormHelperText className='nameError' error>
+                    Name cannot be empty
+                  </FormHelperText>
+                )}
+            </form>
+
+            <div className='accountSetUpButton1'>
+              <Button variant='contained' sx={{
+                  backgroundColor: "#9666cb",
+                  borderRadius: '10px',
+                  ':hover': {
+                    bgcolor: '#a873e5',
+                  },      
+                  }} onClick={deployAccount}>Create Account</Button>
+            </div>
+          </div>
+        }
+        {
+          accountSetupState.hasStarted && accountSetupState.hasStartedDeploying && accountSetupState.hasCompleted && 
+            <div>
+              <div className='accountSetUpHeading1'>
+                Account Deployed Successfully!
+              </div>
+              <div className='accountSetUpButton'>
+                <Button variant='contained' sx={{
+                    backgroundColor: "#9666cb",
+                    borderRadius: '10px',
+                    ':hover': {
+                      bgcolor: '#a873e5',
+                    },      
+                    }} onClick={setUpPassword}>Setup Password</Button>
+              </div>
+            </div>
+        }
       </div>
     </div>
   )
@@ -95,9 +231,6 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn}: any) => {
       <div className='headerA'>
         <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' />
       </div>
-      {/* <div className='logo'>
-        <img src={iconLogo} alt='logo' width="130px" height="135px" className='accountSetUpconLogo' />
-      </div> */}
       {
         walletFound? accountFoundLayout : accountNotFoundLayout
       }
