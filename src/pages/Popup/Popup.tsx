@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import './index.css'
+import Button from '@mui/material/Button';
+
 
 const Popup = () => {
   const [received, setReceived] = useState<any>(null)
@@ -12,7 +14,7 @@ const Popup = () => {
 
   return (
     <div className="container">
-      <button onClick={onSend}>SendMEssage</button>
+      <Button variant="contained" onClick={onSend}>Send Message</Button>
       <div>Received Message is : {received}</div>
     </div>
   )
