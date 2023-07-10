@@ -1,3 +1,5 @@
+@import url('https://api.fontshare.com/v2/css?f[]=plein@400&display=swap');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,6 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   position: relative;
   height: 100vh;
+  background: #222222;
 }
 
 code {
@@ -16,9 +19,60 @@ code {
 
 .container {
   width: 357px;
-  height: 600px;
+  height: 500px;
   min-width: 357px;
   max-width: 357px;
-  min-height: 600px;
+  overflow: hidden;
   margin: auto;
+}
+
+.headerA {
+  height: 50px;
+  width: 357px;
+  border-bottom: 1px solid rgba(103, 103, 102, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.namedLogo {
+  margin-top: 7px;
+}
+
+.logo {
+  height: 180px;
+  display: flex;
+  justify-content: center;
+}
+
+.iconLogo {
+  margin-top: 50px;
+}
+
+.signUpBody0 {
+  display: flex;
+  justify-content: center;
+  color: #e4ccff;
+  margin-top: 30px;
+  font-size: 35px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+}
+
+.signUpBody1 {
+  display: flex;
+  justify-content: center;
+  color: #fefdf9;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 300;
+  /* letter-spacing: 0.07em; */
+}
+
+.signUpBody2 {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }

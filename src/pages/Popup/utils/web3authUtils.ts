@@ -1,7 +1,6 @@
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";

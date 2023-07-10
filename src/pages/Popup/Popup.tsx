@@ -29,10 +29,10 @@ const Popup = () => {
   const [provider, setProvider] = useState<any>(null);
 
   const initializeWeb3Auth = async () => {
-    const initValues = await init();
-    setIsLoggedIn(initValues?.isLoggedIn);
-    setWeb3Auth(initValues?.web3auth);
-    setProvider(initValues?.provider);
+    // const initValues = await init();
+    // setIsLoggedIn(initValues?.isLoggedIn);
+    // setWeb3Auth(initValues?.web3auth);
+    // setProvider(initValues?.provider);
     setLoading(false);
   }
 
@@ -50,7 +50,7 @@ const Popup = () => {
 
 
   return (
-    <div className="container">
+    <div >
       {loading? 
         <div className={classes.container}>
           <CircularProgress color='inherit' />
