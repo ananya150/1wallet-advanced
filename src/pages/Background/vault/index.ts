@@ -34,6 +34,10 @@ export class Vault {
         this.chain = polygonMumbai;
     }
 
+    get initialized() {
+        return this.isInitialized;
+    }
+
     public init (encryptedKey: any , walletAddress: string){
         this.isInitialized = true;
         this.encryptedSigningKey = encryptedKey;
