@@ -97,7 +97,7 @@ export class SimpleAccountFactory {
     constructor(
         address: string
     ){
-        this.provider = new ethers.providers.JsonRpcProvider( exconfig.network.provider || '');
+        this.provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai.g.alchemy.com/v2/Rq-2QXv6NLd6BOUk4xBV5N_Vyo-Wbo2r' || '');
         const signer = new ethers.Wallet('0x8249b9d07753f932621b92ebc20df71258382e49db32eb48e653788f6c810a95' || '' , this.provider);
         this.ownerAddress = address;
         this.factoryContract = new ethers.Contract(exconfig.factory_address , SimpleAccountFactoryDeployment["abi"] , signer);

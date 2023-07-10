@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  factory_address: '0xdF13083f2a3D4fa51420a506cEBB635bdEA76304',
+  factory_address: '0x5ED9Ade5689EB34FD43ab0d4480610ae0072A7C9',
   stateVersion: '0.1',
   network: {
     chainID: '0x13881',

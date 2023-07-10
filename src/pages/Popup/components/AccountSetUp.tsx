@@ -2,17 +2,21 @@ import React, {useState, useEffect} from 'react'
 import { makeStyles } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import iconLogo from "../iconLogo2.png"
 import namedLogo from "../namedLogo.png"
 import { logout } from '../utils/web3authUtils';
 import Button from "@mui/material/Button";
 import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
-import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
-import { getAccount } from '../utils/ethUtils';
-import { SimpleAccountFactory, SimpleAccount } from '../utils/simpleAccount/simpleAccountUtils';
+import { getAccount, getKey } from '../utils/ethUtils';
+import { SimpleAccountFactory } from '../utils/simpleAccount/simpleAccountUtils';
+import ethers from "ethers";
+import { changeWalletName } from '../utils/userop';
+import exconfig from '../../../exconfig';
 
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 const theme = createTheme({
@@ -25,7 +29,6 @@ const theme = createTheme({
     },
   },
 });
-
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -52,15 +55,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type AccountSetupState = {
-  hasStarted: boolean;
-  hasStartedDeploying: boolean;
-  hasCompleted: boolean;
+type AccountSetUpState = {
+  err: any
+  hasStarted: boolean,
+  hasDeployingStart: boolean,
+  hasCompleted: boolean
 }
 
 const initialState={
+  err: null,
   hasStarted: false,
-  hasStartedDeploying: false,
+  hasDeployingStart: false,
   hasCompleted: false
 }
 
@@ -70,12 +75,12 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
   const [isFullPage, setIsFullPage] = useState(false); 
   const [loading, setLoading] = useState(true);
 
-  const [walletName, setWalletName] = useState<any>(null);
   const [walletAddress, setWalletAddress] = useState<any>(null);
 
-  const [accountSetupState, setAccountSetupState] = useState<AccountSetupState>(initialState)
+  const [accountSetUpState, setAccountSetUpState] = useState<AccountSetUpState>(initialState)
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const initialize = async () => {
     try{
@@ -85,9 +90,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
       const walletAddress = await factory.getWalletAddress();
       setWalletAddress(walletAddress);
       if(isFound){
-        const name = await factory.getName();
         setWalletFound(true);
-        setWalletName(name);
         setLoading(false);
         return;
       }
@@ -108,27 +111,54 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
   }
 
   const startSetup = () => {
-    setAccountSetupState(prevState => ({
+    setAccountSetUpState(prevState => ({
       ...prevState , hasStarted: true
-    }));
-
+    }))
   }
 
   const deployAccount = async (event: any) => {
     event.preventDefault();
-
+    setAccountSetUpState({
+      err: null,
+      hasStarted: true,
+      hasDeployingStart: false,
+      hasCompleted: false
+    })
     if (inputValue.trim() === '') {
       setError(true);
+      return;
     } else {
       // Handle form submission
-      console.log('Input value:', inputValue);
+      const name = inputValue;
       setInputValue('')
+
+      setAccountSetUpState(prevState => ({
+        ...prevState , hasDeployingStart: true
+      }));
+
+      // deploy
+      const address = await getAccount(provider);
+      const factory = new SimpleAccountFactory(address);
+      const walletDeployed = await factory.deployWallet();
+      if(!walletDeployed){
+        setAccountSetUpState({
+          err: 'Some error occured while deploying wallet',
+          hasStarted: true,
+          hasDeployingStart: true,
+          hasCompleted: false
+        })  
+        return;
+      }
+      // await delay(10000);
+      setAccountSetUpState(prevState => ({
+        ...prevState , hasCompleted: true
+      }));
     }
 
   }
 
   const setUpPassword = () => {
-
+    navigate('/setUpPassword');
   }
 
   useEffect(() => {
@@ -150,7 +180,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
         Accout Found!
       </div>
       <div className='accountSetUpHeading1'>
-        We found an account with the name <u><b>{walletName}</b></u> linked to your current e-mail
+        We found an account at address "<u><i>{walletAddress}</i></u>" linked to your current e-mail
       </div>
       <div className='accountSetUpButton'>
         <Button variant='contained' sx={{
@@ -171,7 +201,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
       </div>
       <div>
         {
-          !accountSetupState.hasStarted && 
+          !accountSetUpState.hasStarted && 
           <div>
             <div className='accountSetUpHeading1'>
               We could not find any account linked to your email Address.
@@ -188,7 +218,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
           </div>
         }
         {
-          accountSetupState.hasStarted && !accountSetupState.hasStartedDeploying && 
+          accountSetUpState.hasStarted && !accountSetUpState.hasDeployingStart && 
           <div>
             <div className='accountSetUpHeading1'>
               Choose a <b>Name</b> for your account
@@ -212,6 +242,11 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
                     Name cannot be empty
                   </FormHelperText>
                 )}
+                {accountSetUpState.err && 
+                  <div className='accoutSetUpError'>
+                    {accountSetUpState.err}
+                  </div>
+                }
             </form>
 
             <div className='accountSetUpButton1'>
@@ -225,8 +260,21 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
             </div>
           </div>
         }
+        {accountSetUpState.hasStarted && accountSetUpState.hasDeployingStart && !accountSetUpState.hasCompleted && 
+          <div>
+            <div className='accountSetUpLoading0'>
+              This might take 20-30s. Please don't close your extension window.
+            </div>
+            <div className='accountSetUpLoading1'>
+              Deploying...
+            </div>
+                  <div style={{display: 'flex', justifyContent: 'center',}}>
+                  <CircularProgress sx={{color: 'white', width:'18px', marginTop:'24px'}} />
+                </div>
+          </div>
+        }
         {
-          accountSetupState.hasStarted && accountSetupState.hasStartedDeploying && accountSetupState.hasCompleted && 
+           accountSetUpState.hasCompleted && 
             <div>
               <div className='accountSetUpHeading1'>
                 Account Deployed Successfully!
@@ -258,11 +306,11 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
   )
 
   return (
-    // isFullPage? 
-    //   <div className='fullPageWarn'>
-    //     Plese close this tab and continue on the extension.
-    //   </div>
-    //   :
+    isFullPage? 
+      <div className='fullPageWarn'>
+        Plese close this tab and continue the setup in the extension.
+      </div>
+      :
       <div>
         {
           loading? loader : account
