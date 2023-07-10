@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './index.css'
-import Button from '@mui/material/Button';
 import { CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Routes, Route } from "react-router-dom";
@@ -9,6 +8,7 @@ import Home from './components/Home';
 import SignUp from './components/SignUp';
 import AccountSetUp from './components/AccountSetUp';
 import { init } from './utils/web3authUtils';
+import SetUpPassword from './components/SetUpPassword';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -27,6 +27,7 @@ const Popup = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<any>(false)
   const [web3Auth, setWeb3Auth] = useState<any>(null);
   const [provider, setProvider] = useState<any>(null);
+  const [name,setName] = useState<any>('')
 
   const initializeWeb3Auth = async () => {
     const initValues = await init();
@@ -68,8 +69,9 @@ const Popup = () => {
               <div>
                 <Routes>
                   <Route path='/' element={
-                    !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} provider={provider} /> 
+                    !isLoggedIn? <SignUp web3Auth={web3Auth} setProvider={setProvider} setIsLoggedIn={setIsLoggedIn} /> : <AccountSetUp web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} provider={provider} setName={setName} /> 
                   } />
+                  <Route path="/setUpPassword" element={<SetUpPassword provider={provider} name={name} />} />
                 </Routes>
               </div>
             }

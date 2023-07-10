@@ -1,6 +1,6 @@
 import { BigNumberish, BytesLike, ethers } from "ethers";
 import { UserOperationBuilder, BundlerJsonRpcProvider, IPresetBuilderOpts, UserOperationMiddlewareFn } from "userop";
-import { EOASignature, estimateUserOperationGas, getGasPrice } from "userop/dist/preset/middleware";
+import { EOASignature, getGasPrice } from "userop/dist/preset/middleware";
 import { SimpleAccount as SimpleAccountImpl, SimpleAccount__factory } from "./typechain-types";
 import { EntryPoint, EntryPoint__factory } from "userop/dist/typechain";
 import {SimpleAccountFactoryDeployment} from "./deployments/SimpleAccountFactory"

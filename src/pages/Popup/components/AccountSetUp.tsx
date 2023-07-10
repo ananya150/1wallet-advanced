@@ -8,16 +8,10 @@ import Button from "@mui/material/Button";
 import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
 import FormHelperText from '@mui/material/FormHelperText';
-import { getAccount, getKey } from '../utils/ethUtils';
+import { getAccount } from '../utils/ethUtils';
 import { SimpleAccountFactory } from '../utils/simpleAccount/simpleAccountUtils';
-import ethers from "ethers";
-import { changeWalletName } from '../utils/userop';
-import exconfig from '../../../exconfig';
-
-function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import IconButton from '@mui/material/IconButton';
 
 const theme = createTheme({
   palette: {
@@ -69,7 +63,7 @@ const initialState={
   hasCompleted: false
 }
 
-const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
+const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName}: any) => {
   const classes = useStyles();
   const [walletFound, setWalletFound] = useState(false);
   const [isFullPage, setIsFullPage] = useState(false); 
@@ -129,7 +123,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
       return;
     } else {
       // Handle form submission
-      const name = inputValue;
+      setName(inputValue);
       setInputValue('')
 
       setAccountSetUpState(prevState => ({
@@ -157,6 +151,11 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
 
   }
 
+  const openNewTab = (url: string) => {
+    window.open(url, '_blank');
+  }
+
+
   const setUpPassword = () => {
     navigate('/setUpPassword');
   }
@@ -164,6 +163,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
   useEffect(() => {
     if (window.innerWidth > 400) setIsFullPage(true);
     initialize();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loader = (
@@ -180,9 +180,11 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
         Accout Found!
       </div>
       <div className='accountSetUpHeading1'>
-        We found an account at address "<u><i>{walletAddress}</i></u>" linked to your current e-mail
+        <p>We found an account at address </p>
+        <div style={{cursor:'pointer'}} onClick={() => openNewTab(`https://mumbai.polygonscan.com/address/${walletAddress}`)} ><p style={{fontSize: '13px'}}><u>{walletAddress}</u></p></div>
+        <p>linked to your current e-mail</p>
       </div>
-      <div className='accountSetUpButton'>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop:'90px'}}>
         <Button variant='contained' sx={{
             backgroundColor: "#9666cb",
             borderRadius: '10px',
@@ -298,6 +300,11 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider}: any) => {
     <div className='container'>
       <div className='headerA'>
         <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' />
+      </div>
+      <div style={{display: 'flex', justifyContent: 'end', marginRight: '10px', marginTop:'20px' }}>
+        <IconButton onClick={logoutWeb3Auth}>
+          <LogoutIcon style={{color:'white'}} />
+        </IconButton>
       </div>
       {
         walletFound? accountFoundLayout : accountNotFoundLayout
