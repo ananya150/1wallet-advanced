@@ -9,7 +9,8 @@ import Typography from '@mui/material/Typography'
 import { getKey } from '../utils/ethUtils';
 import { deriveEncryptionKey, encryptPrivateKey, hashPassword } from '../utils/cryptoUtils';
 import { useNavigate } from 'react-router-dom';
-import { initWallet } from '../../utils';
+import { initWallet, login } from '../../utils';
+import { CircularProgress } from '@mui/material';
 
 
 const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}: any) => {
@@ -36,11 +37,12 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
     const passwordHash = await hashPassword(password);
     const aesKey = await deriveEncryptionKey(password);
     const encryptedSigningKey = await encryptPrivateKey(aesKey, key);
-    console.log("sending message");
     try{
       await initWallet(walletAddress, encryptedSigningKey, passwordHash, name);
+      await login(aesKey);
+      // fetch data
       setLoading(false);
-      navigate('/')
+      navigate('/home')
     }catch(e){
       setErr('Some Error Occured while setting up');
       setConfirmPassword('');
@@ -66,29 +68,38 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
         <div style={{display: 'flex', justifyContent: 'center', marginTop:'20px', color:'white'}}>
             Choose a password you can remember!
         </div>
-        <div style={{ marginTop:'45px'}}>
-          <PasswordMatchComponent password={password} setPassword={setPassword} confirmPassword={confirmPassword} setConfirmPassword={setConfirmPassword} />
-        </div>
         {
-          err && 
-            <div style={{display: 'flex', justifyContent: 'center', marginTop:'10px'}}>
-              <Typography fontSize='11px' color={password === confirmPassword? 'green': 'red'}>
-                {password === confirmPassword? 'Passwords match': err}
-              </Typography>
+          loading? 
+            <div style={{display: 'flex', justifyContent: 'center', marginTop:'45px'}} >
+              <CircularProgress sx={{color: 'white'}} />
+            </div>
+            :
+            <div>
+              <div style={{ marginTop:'45px'}}>
+                <PasswordMatchComponent password={password} setPassword={setPassword} confirmPassword={confirmPassword} setConfirmPassword={setConfirmPassword} />
+              </div>
+              {
+                err && 
+                  <div style={{display: 'flex', justifyContent: 'center', marginTop:'10px'}}>
+                    <Typography fontSize='11px' color={password === confirmPassword? 'green': 'red'}>
+                      {password === confirmPassword? 'Passwords match': err}
+                    </Typography>
+                  </div>
+              }
+
+              <div style={{display: 'flex', justifyContent: 'center', marginTop:'45px'}}>
+                <Button variant='contained' sx={{
+                  backgroundColor: "#9666cb",
+                  borderRadius: '10px',
+                  ':hover': {
+                    bgcolor: '#a873e5',
+                  },      
+                  }} onClick={confirm}>
+                    Submit
+                </Button>
+              </div>
             </div>
         }
-
-        <div style={{display: 'flex', justifyContent: 'center', marginTop:'45px'}}>
-        <Button variant='contained' sx={{
-          backgroundColor: "#9666cb",
-          borderRadius: '10px',
-          ':hover': {
-            bgcolor: '#a873e5',
-          },      
-          }} onClick={confirm}>
-            Submit
-          </Button>
-        </div>
     </div>
   )
 }

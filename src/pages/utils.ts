@@ -5,7 +5,6 @@ export const initWallet = async (walletAddress: string, encryptedKey: any, passw
     await chrome.storage.local.set({encryptedKey: encryptedKey});
     await chrome.storage.local.set({passwordHash: passwordHash});
     await chrome.storage.local.set({name: name});
-    console.log(`Initialized wallet with address ${walletAddress} and name ${name}`);
 }
 
 export const resetWallet = async () => {
@@ -15,7 +14,6 @@ export const resetWallet = async () => {
     await chrome.storage.local.remove(["name"]);
     await chrome.storage.local.remove(["aesKey"]);
     await chrome.storage.local.set({isLoggedIn: false});
-    console.log("Wallet ready for setup");
 }
 
 export const isInitialized = async () => {
@@ -23,11 +21,7 @@ export const isInitialized = async () => {
     const {encryptedKey} = await chrome.storage.local.get(['encryptedKey']);
     const {passwordHash} = await chrome.storage.local.get(['passwordHash']);
 
-    if(walletAddress && encryptedKey && passwordHash) {
-        console.log("Wallet found");
-        return true;
-    } 
-    console.log("Wallet not found")
+    if(walletAddress && encryptedKey && passwordHash)return true;
     return false;
 }
 
@@ -45,23 +39,19 @@ export const checkPassword = async (password: string) => {
 export const login = async (aesKey: any) => {
     await chrome.storage.local.set({isLoggedIn: true});
     await chrome.storage.local.set({aesKey: aesKey});
-    console.log("Logged in successfully")
 }
 
 export const loginFound = async () => {
     const {isLoggedIn} = await chrome.storage.local.get(['isLoggedIn']);
     if(isLoggedIn){
-        console.log("Log in found");
         return true;
     }
-    console.log("No login found");
     return false;
 }
 
 export const logout = async () => {
     await chrome.storage.local.remove(["aesKey"]);
     await chrome.storage.local.set({isLoggedIn: false});
-    console.log("Logged in successfully")
 }
 
 

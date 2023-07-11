@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import Typography from "@mui/material/Typography";
-import { loginFound, login } from '../../utils';
+import { loginFound, login, checkPassword } from '../../utils';
 
 const theme = createTheme({
   palette: {
@@ -91,7 +91,6 @@ const Login = () => {
 
   const init = async () => {
     const isLoggedIn = await loginFound();
-    console.log("Is password found ", isLoggedIn );
     //fetch data
     if(isLoggedIn) navigate('/home');
   }
@@ -105,8 +104,15 @@ const Login = () => {
 
   const loginWallet = async () => {
     setPasswordErr(false);
+    // check password
+    const isPasswordCorrect = await checkPassword(password);
+    if(!isPasswordCorrect){
+      setPasswordErr(true);
+      return;
+    }
     const aesKey = await deriveEncryptionKey(password);
     await login(aesKey);
+    // fetch data
     navigate('/home');
   }
 
