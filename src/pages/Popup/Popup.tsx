@@ -9,6 +9,7 @@ import SignUp from './components/SignUp';
 import AccountSetUp from './components/AccountSetUp';
 import { init } from './utils/web3authUtils';
 import SetUpPassword from './components/SetUpPassword';
+import { isInitialized } from '../utils';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(() => ({
 
 const Popup = () => {
 
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [walletExist, setWalletExist] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
   const classes = useStyles();
   const [isLoggedIn, setIsLoggedIn] = useState<any>(false)
@@ -38,16 +39,18 @@ const Popup = () => {
     setLoading(false);
   }
 
+  const check = async () => {
+    const isWalletInitialized = await isInitialized();
+    if(isWalletInitialized) {
+      setWalletExist(true);
+      setLoading(false);
+    }else{
+      initializeWeb3Auth()
+    }
+  }
+
   useEffect(() => {
-    chrome.runtime.sendMessage({header: "getInfo/isInitialized"} , function(response){
-      if(response.message){
-        setIsInitialized(true);
-        setLoading(false);
-      } 
-      else {
-        initializeWeb3Auth();
-      }
-    })
+    check();
   },[])
 
 
@@ -59,7 +62,7 @@ const Popup = () => {
         </div>
         :
         <div>
-            {isInitialized? 
+            {walletExist? 
               <div>
                 <Routes>
                   <Route path='/' element={<Login />} />

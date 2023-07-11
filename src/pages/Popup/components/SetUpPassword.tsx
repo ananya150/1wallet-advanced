@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import { getKey } from '../utils/ethUtils';
 import { deriveEncryptionKey, encryptPrivateKey, hashPassword } from '../utils/cryptoUtils';
 import { useNavigate } from 'react-router-dom';
+import { initWallet } from '../../utils';
 
 
 const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}: any) => {
@@ -35,25 +36,18 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
     const passwordHash = await hashPassword(password);
     const aesKey = await deriveEncryptionKey(password);
     const encryptedSigningKey = await encryptPrivateKey(aesKey, key);
-    console.log("sending message")
-    chrome.runtime.sendMessage({header: "setVault/init", params: {encryptedKey: encryptedSigningKey, walletAddress: walletAddress , passwordHash: passwordHash, name:name}} , function(response){
-      if(response.message){
-        chrome.storage.local.set({isPasswordEntered: true});
-        chrome.storage.local.set({'aeskey': aesKey });
-
-        // fetch data and store in redux store
-
-        setLoading(false);
-        navigate('/home')
-      } 
-      else {
-        setErr('Some Error Occured while setting up');
-        setConfirmPassword('');
-        setPassword('');
-        setLoading(false);
-        return;
-      }
-    }) 
+    console.log("sending message");
+    try{
+      await initWallet(walletAddress, encryptedSigningKey, passwordHash, name);
+      setLoading(false);
+      navigate('/')
+    }catch(e){
+      setErr('Some Error Occured while setting up');
+      setConfirmPassword('');
+      setPassword('');
+      setLoading(false);
+      return;
+    }
   }
 
   return (

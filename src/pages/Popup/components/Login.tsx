@@ -1,6 +1,6 @@
 import React,{useState, useEffect, useRef} from 'react'
 import {useNavigate} from 'react-router-dom';
-import { deriveEncryptionKey, hashPassword } from '../utils/cryptoUtils';
+import { deriveEncryptionKey } from '../utils/cryptoUtils';
 import namedLogo from "../namedLogo.png";
 import iconLogo from "../iconLogo2.png";
 import Button from "@mui/material/Button";
@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import Typography from "@mui/material/Typography";
+import { loginFound, login } from '../../utils';
 
 const theme = createTheme({
   palette: {
@@ -89,10 +90,10 @@ const Login = () => {
   };
 
   const init = async () => {
-    const {isPasswordEntered} = await chrome.storage.local.get('isPasswordEntered');
-    console.log("Is password found ", isPasswordEntered );
+    const isLoggedIn = await loginFound();
+    console.log("Is password found ", isLoggedIn );
     //fetch data
-    if(isPasswordEntered) navigate('/home');
+    if(isLoggedIn) navigate('/home');
   }
 
   useEffect(() => {
@@ -102,24 +103,11 @@ const Login = () => {
     init();
   }, [])
 
-  const login = async () => {
+  const loginWallet = async () => {
     setPasswordErr(false);
     const aesKey = await deriveEncryptionKey(password);
-    const hash = await hashPassword(password);
-    chrome.runtime.sendMessage({header: "getInfo/passHash", params: {hash: hash}} , function(response){
-      if(response.message){
-        chrome.storage.local.set({isPasswordEntered: true});
-        chrome.storage.local.set({'aeskey': aesKey });
-
-        // fetch data and store in redux store
-        navigate('/home')
-      } 
-      else {
-        setPasswordErr(true);
-        setPassword('');
-        return;
-      }
-    }) 
+    await login(aesKey);
+    navigate('/home');
   }
 
   return (
@@ -169,7 +157,7 @@ const Login = () => {
           ':hover': {
             bgcolor: '#a873e5',
           },      
-          }} onClick={login}>Login</Button>
+          }} onClick={loginWallet}>Login</Button>
       </div>
     </div>
   )
