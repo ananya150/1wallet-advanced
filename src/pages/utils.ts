@@ -54,4 +54,9 @@ export const logout = async () => {
     await chrome.storage.local.set({isLoggedIn: false});
 }
 
+export const getWalletInfo = async () => {
+    const {walletAddress} = await chrome.storage.local.get(['walletAddress']);
+    const {name} = await chrome.storage.local.get(['name']);
+    return {walletAddress, name};
+}
 

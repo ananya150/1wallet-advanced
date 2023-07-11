@@ -7,6 +7,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { MemoryRouter } from "react-router-dom";
+import { Provider } from 'react-redux';
+import {store} from './store/store';
 
 
   const container = document.getElementById('popup');
@@ -14,7 +16,9 @@ import { MemoryRouter } from "react-router-dom";
     const root = createRoot(container);
     root.render(
       <MemoryRouter>
-        <Popup />
+        <Provider store={store}>
+          <Popup />
+        </Provider>
       </MemoryRouter>
     );
   }
