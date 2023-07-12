@@ -8,60 +8,31 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CheckIcon from '@mui/icons-material/Check';
-import { getWalletInfo } from '../../utils';
 import RecentTransactions from './RecentTransactions';
+import GasTank from './GasTank';
 
-function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+import { makeStyles } from '@mui/styles';
+import BatchTransaction from './BatchTransaction';
 
 const Home = () => {
+  const [value, setValue] = useState('batch');
 
-  const [value, setValue] = useState('recent');
-  const [walletAddress, setWalletAddress] = useState('');
-  const [name,setName] = useState('')
-  const [copied,setCopied] = useState(false);
-
-  const init = async () => {
-    const {walletAddress, name} = await getWalletInfo();
-    setName(name);
-    setWalletAddress(walletAddress);
-  }
-
-  const copyAddress = async () => {
-    setCopied(true);
-    navigator.clipboard.writeText(walletAddress)
-    await (delay(2000));
-    setCopied(false);
-  }
-
-
-  useEffect(() => {
-    init();
-  })
 
   return (
     <div className='container' style={{color: 'white'}}> 
+      {/* {tokens.map((token: any) => (
+        <div key={token.contract_address}>
+          <h2>{token.contract_name}</h2>
+        </div>
+      ))} */}
       <div className='headerA' style={{width:'365px'}}>
         <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' />
       </div>
-      <div style={{display: 'flex', justifyContent: 'center', marginTop: '10px', marginLeft:'10px', alignItems:'center', width:'365px', background:'#262626'}} >
-          <Tooltip title={walletAddress}>
-            <div onClick={copyAddress} style={{display: 'flex', color: '#fefdf9', fontSize:'16px', cursor:'pointer' }}>
-              <b>{name.toUpperCase()}</b>
-              {copied? 
-                <CheckIcon style={{marginLeft: '10px', fontSize: '13px', color: '#B2BEB5', marginTop:'2px'}} /> 
-                :
-                <ContentCopyIcon style={{marginLeft: '10px', fontSize: '13px', color: '#B2BEB5', marginTop:'2px'}} />
-              } 
-            </div>
-          </Tooltip>
-        </div>
-      <div className='accountHome' style={{height:'380px', overflowX:'hidden' ,overflowY:'scroll'}}>
+      <div className='accountHome' style={{height:'390px', overflowX:'hidden' ,overflowY:'scroll'}}>
       {value === 'tokens' && <TokenBalances />}
+      {value === 'gas' && <GasTank />}
       {value === 'recent' && <RecentTransactions />}
+      {value === 'batch' && <BatchTransaction/>}
       </div>
       <div style={{position:'absolute', bottom:'0px', height:'60px', background:'#2b2b2b', width:'365px' }}>
           <BottomNavigation sx={{width:'365px',background:'#2b2b2b'}}         

@@ -10,6 +10,7 @@ import AccountSetUp from './components/AccountSetUp';
 import { init } from './utils/web3authUtils';
 import SetUpPassword from './components/SetUpPassword';
 import { isInitialized } from '../utils';
+import Send from './components/Send';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -67,6 +68,7 @@ const Popup = () => {
                 <Routes>
                   <Route path='/' element={<Login />} />
                   <Route path='/home' element={<Home/>} />
+                  <Route path='/send' element={<Send />} />
                 </Routes>
               </div>
             : 
@@ -77,6 +79,7 @@ const Popup = () => {
                   } />
                   <Route path="/setUpPassword" element={<SetUpPassword provider={provider} name={name} web3Auth={web3Auth} setIsLoggedIn={setIsLoggedIn} walletAddress={walletAddress} />} />
                   <Route path='/home' element={<Home/>} />
+                  <Route path='/send' element={<Send />} />
                 </Routes>
               </div>
             }

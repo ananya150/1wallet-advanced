@@ -91,6 +91,7 @@ const Login = () => {
 
   const init = async () => {
     const isLoggedIn = await loginFound();
+    console.log("Loggen in found ", isLoggedIn);
     //fetch data
     if(isLoggedIn) navigate('/home');
   }
