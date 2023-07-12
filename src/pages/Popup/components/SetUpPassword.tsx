@@ -38,6 +38,7 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
     const aesKey = await deriveEncryptionKey(password);
     const encryptedSigningKey = await encryptPrivateKey(aesKey, key);
     try{
+      console.log(name)
       await initWallet(walletAddress, encryptedSigningKey, passwordHash, name);
       await login(aesKey);
       // fetch data

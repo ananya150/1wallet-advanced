@@ -73,6 +73,7 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState(false);
   const navigate = useNavigate();
+  const [accoundFoundNameStart, setAccountFoundNameStart] = useState(false);
 
   const initialize = async () => {
     try{
@@ -107,6 +108,13 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress
       ...prevState , hasStarted: true
     }))
   }
+
+  const acouuntFoundSetupComplete = (event: any) => {
+    event.preventDefault();
+    setName(inputValue);
+    navigate('/setUpPassword');
+  }
+
 
   const deployAccount = async (event: any) => {
     event.preventDefault();
@@ -177,21 +185,67 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress
       <div className='accountSetupHeading0'>
         Accout Found!
       </div>
-      <div className='accountSetUpHeading1'>
-        <p>We found an account at address </p>
-        <div style={{cursor:'pointer'}} onClick={() => openNewTab(`https://mumbai.polygonscan.com/address/${walletAddress}`)} ><p style={{fontSize: '13px'}}><u>{walletAddress}</u></p></div>
-        <p>linked to your current e-mail</p>
+      {
+        accoundFoundNameStart?
+          <div>
+            <div className='accountSetUpHeading1'>
+              Choose a <b>Name</b> for your account
+            </div>
+            <form onSubmit={acouuntFoundSetupComplete}>
+              <div style={{display:'flex', justifyContent:'center', marginTop: '110px'}}>
+                <TextField value={inputValue} onChange={handleChange} fullWidth label="name" id="name" size="small" style={{ width: '250px', borderRadius: '120px' }} className={classes.input} InputLabelProps={{
+                style: {
+                    color: theme.palette.text.primary,
+                  },
+                }}
+                InputProps={{
+                  style: {
+                    color: theme.palette.text.primary,
+                  },
+                }}
+              />
+              </div>
+                {error && (
+                  <FormHelperText className='nameError' error>
+                    Name cannot be empty
+                  </FormHelperText>
+                )}
+                {accountSetUpState.err && 
+                  <div className='accoutSetUpError'>
+                    {accountSetUpState.err}
+                  </div>
+                }
+            </form>
+
+            <div className='accountSetUpButton1'>
+              <Button variant='contained' sx={{
+                  backgroundColor: "#9666cb",
+                  borderRadius: '10px',
+                  ':hover': {
+                    bgcolor: '#a873e5',
+                  },      
+                  }} onClick={acouuntFoundSetupComplete}>Setup Password</Button>
+            </div>
+          </div>
+          :
+          <div>
+            <div className='accountSetUpHeading1'>
+              <p>We found an account at address </p>
+              <div style={{cursor:'pointer'}} onClick={() => openNewTab(`https://mumbai.polygonscan.com/address/${walletAddress}`)} ><p style={{fontSize: '13px'}}><u>{walletAddress}</u></p></div>
+              <p>linked to your current e-mail</p>
+            </div>
+            <div style={{display: 'flex', justifyContent: 'center', marginTop:'90px'}}>
+              <Button variant='contained' sx={{
+                  backgroundColor: "#9666cb",
+                  borderRadius: '10px',
+                  ':hover': {
+                    bgcolor: '#a873e5',
+                  },      
+                  }} onClick={() => setAccountFoundNameStart(true)}>Setup Account</Button>
+            </div>
+          </div>
+        }
       </div>
-      <div style={{display: 'flex', justifyContent: 'center', marginTop:'90px'}}>
-        <Button variant='contained' sx={{
-            backgroundColor: "#9666cb",
-            borderRadius: '10px',
-            ':hover': {
-              bgcolor: '#a873e5',
-            },      
-            }} onClick={setUpPassword}>Setup Password</Button>
-      </div>
-    </div>
   )
 
   const accountNotFoundLayout = (
