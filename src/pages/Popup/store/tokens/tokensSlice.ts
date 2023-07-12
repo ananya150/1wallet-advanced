@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk , PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Token {
@@ -17,6 +17,16 @@ interface Token {
     pretty_quote: any;
   }
 
+  interface TokenState {
+    totalBalance: number;
+    tokens: Token[];
+  }
+
+  const initialState: TokenState = {
+    totalBalance: 0.00,
+    tokens: [],
+  };
+
 
   export const fetchTokens = createAsyncThunk(
     'tokens/fetchTokens',
@@ -30,13 +40,19 @@ interface Token {
 
 export const tokensSlice = createSlice({
     name: 'tokens',
-    initialState: [],
+    initialState: initialState,
     reducers: {},
-    extraReducers: builder => {
-      builder.addCase(fetchTokens.fulfilled, (state, action) => {
-        return action.payload;  // `action.payload` contains the response data
+    extraReducers: (builder) => {
+      builder.addCase(fetchTokens.fulfilled, (state, action: PayloadAction<Token[]>) => {
+        state.tokens = action.payload;
+  
+        // Calculate totalBalance based on token values. 
+        // Make sure to adjust this to match how your token values are represented.
+        // const total = action.payload.reduce((acc, token) => acc + parseFloat(token.value), 0);
+        const total = state.totalBalance + 1.547
+        state.totalBalance = parseFloat(total.toFixed(2));  // Convert to string with two decimal places.
       });
-    }
+    },
 })
 
 export default tokensSlice.reducer;
