@@ -185,7 +185,7 @@ code {
 }
 
 div::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
 }
 
 div::-webkit-scrollbar-track {
@@ -193,5 +193,58 @@ div::-webkit-scrollbar-track {
 }
 
 div::-webkit-scrollbar-thumb {
+  background: #414141;
+}
+
+.tokenContainer {
+  margin: auto;
+  margin-top: 5em;
+  width: 27em;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
   background: #2b2b2b;
+}
+
+.row {
+  padding: 16px;
+  height: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.tokenLogo {
+  border-radius: 50%;
+  height: 30px;
+}
+
+.left-info-container {
+  display: flex;
+  flex-direction: column;
+  height: 34px;
+  padding-left: 12px;
+  justify-content: space-between;
+}
+.tokenName {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.tokenBalance {
+  color: rgb(112, 112, 112);
+  margin-top: 4px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  height: 30px;
+  justify-content: space-between;
+  align-items: end;
 }

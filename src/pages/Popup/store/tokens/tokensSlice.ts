@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk , PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-interface Token {
+export interface Token {
     contract_decimals: number;
     contract_name: string;
     contract_ticker_symbol: string;
