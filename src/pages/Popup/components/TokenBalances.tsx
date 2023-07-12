@@ -88,7 +88,7 @@ const TokenBalances = () => {
               ':hover': {
                 bgcolor: '#a873e5',
               },      
-              }} 
+              }} onClick={() => navigate('/deposit')}
               >
               Deposit
           </Button>

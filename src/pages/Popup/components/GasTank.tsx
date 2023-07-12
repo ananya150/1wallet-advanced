@@ -47,6 +47,21 @@ const GasTank = () => {
           </Button>
         </div>
         <div style={{display:'flex', justifyContent:'center', marginTop:'50px', width:'365px', background:'#222222'}}>
+          <Button variant='contained' sx={{
+              backgroundColor: "#2b2b2b",
+              color:'gray',
+              fontSize:'15px',
+              width:'325px',
+              ':hover': {
+                bgcolor: '#2f2f2f',
+                color:'#fefdf9',
+              },      
+              }} 
+              >
+              Add Custom Paymasters
+            </Button>
+        </div>
+        {/* <div style={{display:'flex', justifyContent:'center', marginTop:'50px', width:'365px', background:'#222222'}}>
             <Button variant='contained' startIcon={<DehazeIcon />} sx={{
                 backgroundColor: "#9666cb",
                 fontSize:'13px',
@@ -60,7 +75,7 @@ const GasTank = () => {
                 >
                 Withdraw
             </Button>
-        </div>
+        </div> */}
     </div>
   )
 }
