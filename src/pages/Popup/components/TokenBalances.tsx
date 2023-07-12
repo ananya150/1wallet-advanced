@@ -3,19 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store';
 import { getWalletInfo } from '../../utils';
 import { fetchTokens, Token } from '../store/tokens/tokensSlice';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from '@mui/material/Tooltip';
-import CheckIcon from '@mui/icons-material/Check';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { useNavigate } from 'react-router-dom';
 import  Button  from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
-
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
 const TokenBalances = () => {
 
@@ -25,28 +19,18 @@ const TokenBalances = () => {
     const totalBalance = 7.35
     const gasBalance = 1.57
     const [walletAddress, setWalletAddress] = useState('');
-    const [name,setName] = useState('')
-    const [copied,setCopied] = useState(false);
     const [loading,setLoading] = useState(false);
     const navigate = useNavigate();
 
     const init = async () => {
         setLoading(true)
         const {walletAddress, name} = await getWalletInfo();
-        console.log(walletAddress);
-        setName(name);
         setWalletAddress(walletAddress);
         await dispatch(fetchTokens(walletAddress));
         setLoading(false);
       }
     
-      const copyAddress = async () => {
-        setCopied(true);
-        navigator.clipboard.writeText(walletAddress)
-        await (delay(2000));
-        setCopied(false);
-      }
-    
+
       useEffect(() => {
         init();
       }, [dispatch]);
@@ -54,18 +38,6 @@ const TokenBalances = () => {
 
   return (
     <div>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: '10px', marginLeft:'10px', alignItems:'center', width:'365px', background:'#262626'}} >
-          <Tooltip title={walletAddress}>
-            <div onClick={copyAddress} style={{display: 'flex', color: '#fefdf9', fontSize:'16px', cursor:'pointer' }}>
-              <b>{name.toUpperCase()}</b>
-              {copied? 
-                <CheckIcon style={{marginLeft: '10px', fontSize: '13px', color: '#B2BEB5', marginTop:'2px'}} /> 
-                :
-                <ContentCopyIcon style={{marginLeft: '10px', fontSize: '13px', color: '#B2BEB5', marginTop:'2px'}} />
-              } 
-            </div>
-          </Tooltip>
-        </div>
         <div style={{display: 'flex', justifyContent: 'center', marginTop: '40px', fontSize:'45px', fontWeight:'600',color:'#fefdf9',width:'365px', background:'#252525'}}>
             ${totalBalance}
         </div>

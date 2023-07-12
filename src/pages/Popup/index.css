@@ -198,7 +198,7 @@ div::-webkit-scrollbar-thumb {
 
 .tokenContainer {
   margin: auto;
-  margin-top: 5em;
+  margin-top: 3em;
   width: 27em;
   display: flex;
   flex-direction: column;
@@ -247,4 +247,16 @@ div::-webkit-scrollbar-thumb {
   height: 30px;
   justify-content: space-between;
   align-items: end;
+}
+
+.headera {
+  height: 50px;
+  width: 357px;
+  display: flex;
+  justify-content: center;
+  background: #222222;
+}
+
+.headerbottom {
+  border-bottom: 1px solid rgba(103, 103, 102, 0.5);
 }
