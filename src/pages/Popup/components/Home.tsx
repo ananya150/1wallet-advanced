@@ -15,7 +15,7 @@ import { makeStyles } from '@mui/styles';
 import BatchTransaction from './BatchTransaction';
 
 const Home = () => {
-  const [value, setValue] = useState('batch');
+  const [value, setValue] = useState('tokens');
 
 
   return (
