@@ -3,20 +3,30 @@ import { initWallet, logout, resetWallet } from "../utils";
 import { Request } from "./types";
 console.log("Statting main service");
 
+
 chrome.runtime.onMessage.addListener(
     async function(request: Request, sender: any, sendResponse: any){
 
-        if(request.header === "set/initWallet"){
-          try{
-            const {encryptedKey, walletAddress, name, passwordHash} = request.params;
-            await initWallet(walletAddress, encryptedKey, passwordHash, name);
-            sendResponse({message: true});
-            return true;
-          }catch(e){
-            sendResponse({message: false});
-            return true;
-          }
-        }
+      if (request.method === "inject script") {
+        await chrome.scripting
+        .executeScript({
+          target : {tabId : sender.tab.id},
+          files : [ "ex_injectScript.bundle.js" ],
+          world:"MAIN"
+        })
+        .then(() => console.log("script injected on target frames"));
+        sendResponse({tab: sender.tab.id});
+        return true
+     }
+
+     if(request.method === "net_version") {
+       console.log(`Got the request ${request.method} in background script`);
+       const result = 'Network Id: 80001';
+       sendResponse({result});
+       return true;
+     }
+
+
 
     }
 )

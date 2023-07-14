@@ -1,4 +1,4 @@
 export type Request = {
-    header: string
+    method: string
     params?: any
 }

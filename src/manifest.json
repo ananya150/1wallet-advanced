@@ -7,7 +7,7 @@
     "service_worker": "ex_background.bundle.js"
   },
   "action": {
-    "default_title": "Taho",
+    "default_title": "1Wallet",
     "default_icon": "icon-34.png",
     "default_popup": "popup.html"
   },
@@ -17,11 +17,23 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
-      "js": ["ex_contentScript.bundle.js"]
+      "js": ["ex_contentScript.bundle.js"],
+      "run_at": "document_start"
     }
   ],
 	"permissions": [
 		"storage",
-		"alarms"
-	  ]
+		"alarms",
+    "scripting",
+    "activeTab"
+	  ],
+    "web_accessible_resources": [{
+      "resources": ["ex_injectScript.bundle.js"],
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"]
+    }],
+    "host_permissions": [
+      "http://*/",
+      "https://*/"
+  ]
+    
 }
