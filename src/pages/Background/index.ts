@@ -1,42 +1,59 @@
 /// <reference types="chrome"/>
-import { initWallet, logout, resetWallet } from "../utils";
+import { getWalletInfo, logout, resetWallet } from "../utils";
 import { Request } from "./types";
 console.log("Statting main service");
 
 
-chrome.runtime.onMessage.addListener(
-    async function(request: Request, sender: any, sendResponse: any){
+// Messaging between different scripts
 
+chrome.runtime.onMessage.addListener(
+
+    function(request: Request, sender: any, sendResponse: any){
+
+      // injecting the provider
       if (request.method === "inject script") {
-        await chrome.scripting
+
+        chrome.scripting
         .executeScript({
           target : {tabId : sender.tab.id},
           files : [ "ex_injectScript.bundle.js" ],
           world:"MAIN"
         })
-        .then(() => console.log("script injected on target frames"));
         sendResponse({tab: sender.tab.id});
-        return true
-     }
-
-     if(request.method === "net_version") {
-       console.log(`Got the request ${request.method} in background script`);
-       const result = 'Network Id: 80001';
-       sendResponse({result});
-       return true;
      }
 
 
+     // Wallet methods
 
+     // getting the address
+     if(request.method === "eth_requestAccounts") {
+
+      getWalletInfo()
+      .then(({ walletAddress }) => {
+        sendResponse({ result: walletAddress || '' });
+      })
+      .catch((error) => {
+        sendResponse({ error: 'Error occurred while retrieving wallet info'});
+      });
+    }
+
+
+
+
+    return true;
     }
 )
 
+
+// On install event listener
 chrome.runtime.onInstalled.addListener(async() => {
     // Create an alarm that fires every 30 minutes
     chrome.alarms.create("passwordReset", { periodInMinutes: 30 });
     await resetWallet();
   });
 
+
+// alarm listener
 chrome.alarms.onAlarm.addListener(async(alarm) => {
     if (alarm.name === "passwordReset") {
       // Reset password state
@@ -45,6 +62,7 @@ chrome.alarms.onAlarm.addListener(async(alarm) => {
     }
   });
 
+// new window open listener
 chrome.windows.onCreated.addListener(async () => {
     console.log("Resseting state due to window");
     await logout();
