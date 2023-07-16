@@ -69,7 +69,7 @@ const Send = ({setValue}: any) => {
             </div>
             :
             <div>
-                <SendToken token={tokenSelected} setTokenSelected={setTokenSelected} />
+                <SendToken token={tokenSelected} setTokenSelected={setTokenSelected} setValue={setValue} />
             </div>
         }
 
