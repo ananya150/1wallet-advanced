@@ -7,6 +7,8 @@ import PurpleButton from './ui/PurpleButton';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
+// TODO Get gas balance, functionality to crypto , fiat and paymaster buttons
+
 const GasTank = () => {
 
     const [gasBalance, setGasBalance] = useState('1.57')
