@@ -52,7 +52,7 @@ const Send = ({setValue}: any) => {
                                             </div>
                         
                                             <div className='right1'>
-                                                <div style={{marginTop:'4px', fontSize:'14px', color:'#fefdf9'}}>{(parseFloat(item.balance)/(10**item.contract_decimals)).toFixed(2)} {item.contract_ticker_symbol}</div>
+                                                <div style={{marginTop:'4px', fontSize:'14px', color:'#fefdf9'}}>{(parseFloat(item.balance)/(10**item.contract_decimals)).toFixed(4)} {item.contract_ticker_symbol}</div>
                                             </div>
                                         </div>
                                     )

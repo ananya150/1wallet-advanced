@@ -29,6 +29,10 @@ code {
   max-height: 560px;
   overflow: hidden;
   margin: auto;
+  background: #222222;
+}
+
+.back {
   background: linear-gradient(#272727, #222222);
 }
 

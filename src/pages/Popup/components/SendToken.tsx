@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 import { Token } from '../store/tokens/tokensSlice';
-import InputField from './ui/InputField';
+import {InputField, InputFieldWithButton} from './ui/InputField';
 import BlackButton from './ui/BlackButton';
 import noImg from '../noImg.png';
 
 // TODO handle send token
+
+function isAddress(address: string) {
+  if (!/^0x[0-9A-Fa-f]{40}$/i.test(address)) {
+    return false; // Invalid length or format
+  }
+
+  return true;
+}
+
+function validateAmount(str: string, maxNumber: number) {
+  const number = Number(str);
+
+  if (isNaN(number) || !Number.isFinite(number) || number === 0 || number > maxNumber) {
+    return false; // Invalid string
+  }
+
+  return true; // Valid string
+}
 
 type pageProps = {
     token: Token;
@@ -13,6 +31,8 @@ type pageProps = {
 }
 
 const SendToken = ({token, setTokenSelected, setValue}: pageProps) => {
+    const maxAmount = parseFloat(token.balance)/(10**token.contract_decimals)
+    console.log(maxAmount)
     const [address, setAddress] = useState('');
     const [addressErr, setAddressErr] = useState(false);
     const handleAddress = (event: any) => {
@@ -32,6 +52,21 @@ const SendToken = ({token, setTokenSelected, setValue}: pageProps) => {
       setValue("tokens")
     }
 
+    const handleSend = () => {
+      setAddressErr(false);
+      setAmountErr(false);
+      const isAdd = isAddress(address);
+      if(!isAdd){
+        setAddressErr(true);
+        return;
+      }
+      const isValidAmount = validateAmount(amount, maxAmount)
+      if(!isValidAmount){
+        setAmountErr(true);
+        return
+      }
+    }
+
 
   return (
     <div style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
@@ -49,14 +84,14 @@ const SendToken = ({token, setTokenSelected, setValue}: pageProps) => {
           <InputField value={address} handleValue={handleAddress} isErr={addressErr} autofocus={true} errMsg={'Invalid Address'} placeHolder={"Recipient's Address"} />
         </div>
         <div style={{display:'flex', justifyContent:'center'}}>
-          <InputField value={amount} handleValue={handleAmount} isErr={amountErr} autofocus={false} errMsg={'Invalid Amount'} placeHolder={"Amount"} />
+          <InputFieldWithButton setValue={setAmount} maxValue={maxAmount} value={amount} handleValue={handleAmount} isErr={amountErr} autofocus={false} errMsg={'Invalid Amount'} placeHolder={"Amount"} />
         </div>
 
       </div>
         <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
           <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between'}}>
             <BlackButton onClick={handleCancel} text='Cancel' width='150px' />
-            <BlackButton text='Send' width='150px' />
+            <BlackButton onClick={handleSend} text='Send' width='150px' />
           </div>
         </div>
     </div>
