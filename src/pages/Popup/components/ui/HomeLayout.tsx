@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import namedLogo from '../../namedLogo.png';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -30,8 +30,8 @@ import { getWalletInfo } from '../../../utils';
 
 // Total height = 560px
 // header height = 50px 
+// bottom navigation = 60px
 // remaining height = 450px
-
 const Layout = ({children, value, setValue}: any) => {
 
   const [state, setState] = React.useState(false);

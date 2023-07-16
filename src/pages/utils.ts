@@ -5,6 +5,7 @@ export const initWallet = async (walletAddress: string, encryptedKey: any, passw
     await chrome.storage.local.set({encryptedKey: encryptedKey});
     await chrome.storage.local.set({passwordHash: passwordHash});
     await chrome.storage.local.set({name: name});
+    await chrome.storage.local.set({batchTransactions: []})
 }
 
 export const resetWallet = async () => {
@@ -14,6 +15,7 @@ export const resetWallet = async () => {
     await chrome.storage.local.remove(["name"]);
     await chrome.storage.local.remove(["aesKey"]);
     await chrome.storage.local.set({isLoggedIn: false});
+    await chrome.storage.local.remove(["batchTransactions"]);
 }
 
 export const isInitialized = async () => {
