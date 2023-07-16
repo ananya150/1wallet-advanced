@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import namedLogo from '../../namedLogo.png';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -15,13 +15,18 @@ import  ListItem  from '@mui/material/ListItem';
 import  ListItemButton  from '@mui/material/ListItemButton';
 import  ListItemIcon  from '@mui/material/ListItemIcon';
 import Drawer  from '@mui/material/Drawer';
-import Button  from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton  from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Avatar from '@mui/material/Avatar';
 import accountLogo from '../../accountLogo3.jpg'
+import accountLogo2 from '../../accountLogo2.png'
+import ReactDOMServer from 'react-dom/server';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
+import { getWalletInfo } from '../../../utils';
+
 
 // Total height = 560px
 // header height = 50px 
@@ -29,80 +34,109 @@ import accountLogo from '../../accountLogo3.jpg'
 
 const Layout = ({children, value, setValue}: any) => {
 
-  const [state, setState] = React.useState(false)
-
-  const toggleDrawer = (anchor: any, open: any) => (event: any) => {
+  const [state, setState] = React.useState(false);
+  const [address, setAddress] = useState('');
+  const [copied,setCopied] = useState(false);
+  const toggleDrawer = () => (event: any) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
     state ? setState(false) : setState(true);
   };
 
-  const list = (anchor: any) => (
+  const handleAccountClick = () => {
+    setValue("accounts")
+    setState(false);
+  }
+
+  const handleSettingsClick = () => {
+    setValue("settings"); 
+    setState(false);
+  }
+
+  const init = async () => {
+    const {walletAddress} = await getWalletInfo();
+    setAddress(walletAddress);
+  }
+
+  function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  const copyAddress = async () => {
+    setCopied(true);
+    navigator.clipboard.writeText(address)
+    await (delay(2000));
+    setCopied(false);
+  }
+
+  useEffect(() => {
+    init();
+  },[])
+
+  const list = () => (
     <Box
-      sx={{ width: 70, height:'560px', background:'#000000', display:'flex', flexDirection:'column', justifyContent:'space-between',  }}
+      sx={{ width: 70, height:'560px', background:'#000000', display:'flex', flexDirection:'column', justifyContent:'space-between', marginX:'auto' }}
       role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
     >
       <div>
         <List style={{color:'white'}}>
             <ListItem disablePadding>
-              <ListItemButton onClick={toggleDrawer('left', true)}>
+              <ListItemButton onClick={toggleDrawer()}>
                 <ListItemIcon>
                   <ArrowBackIcon sx={{color:'white'}} />
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
         </List>
-        <List style={{color:'white'}}>
-            <ListItem disablePadding style={{marginRight:'20px'}}>
-              <ListItemButton onClick={toggleDrawer('left', true)}>
-                <ListItemIcon>
-                  <Avatar alt="Account" src={accountLogo} />
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-        {/* <span style={{color:'white', marginLeft:'15px', fontFamily:'sans-serif'}}>Account</span> */}
-        </List>
+        <IconButton onClick={handleAccountClick}>
+          <Avatar  alt="Account" sx={{height:'50px', width:'50px'}} src={accountLogo} />
+        </IconButton>
       </div>
-      <List style={{color:'white'}}>
-          <ListItem disablePadding>
-            <ListItemButton onClick={toggleDrawer('left', true)}>
-              <ListItemIcon>
-                <SettingsIcon sx={{color:'white'}} />
-              </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-      </List>
+
+      <IconButton onClick={handleSettingsClick}>
+        <SettingsIcon sx={{color:'white'}} />
+      </IconButton>
     </Box>
   );
-
-
-
-
-
 
   return (
     <div className='container' style={{color: 'white'}}>
         <div className='headerHome' style={{width:'365px'}}>
             <React.Fragment key={'left'}>
               <div style={{marginTop:'6px'}}>
-                <IconButton onClick={toggleDrawer('left', true)} >
+                <IconButton onClick={toggleDrawer()} >
                   <MenuIcon sx={{color:'white'}} />
                 </IconButton>
               </div>
               <Drawer
                 anchor={'left'}
                 open={state}
-                onClose={toggleDrawer('left', false)}
+                onClose={toggleDrawer()}
               >
-                {list('left')}
+                {list()}
               </Drawer>
             </React.Fragment>
 
-        <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' style={{marginRight:'24px'}} />
-          <div></div>
+          <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' style={{marginLeft:'18px'}} />
+          
+          <div>
+            <IconButton 
+              onClick={copyAddress}
+              data-tooltip-id="address-tooltip"
+              data-tooltip-html={ReactDOMServer.renderToStaticMarkup(<div>
+                {address.slice(0,6)}.....{address.slice(-6)}
+                {copied? 
+                <CheckIcon style={{marginLeft: '10px', fontSize: '13px', color: '#B2BEB5', marginTop:'2px'}} /> 
+                :
+                <ContentCopyIcon style={{marginLeft: '10px', fontSize: '13px', color: '#B2BEB5', marginTop:'2px'}} />
+                } 
+              </div>)}
+              data-tooltip-place="bottom"      
+            >
+              <Avatar  alt="Account" sx={{height:'35px', width:'35x', marginRight:'1px'}} src={accountLogo2} />
+            </IconButton>
+          </div>
         </div>
 
         <div style={{height:'450px', overflowX:'hidden' ,overflowY:'scroll'}}>
@@ -156,6 +190,7 @@ const Layout = ({children, value, setValue}: any) => {
           <Tooltip id="recent-tooltip" />
           <Tooltip id="batch-tooltip" />
           <Tooltip id="gas-tooltip" />
+          <Tooltip id="address-tooltip" />
       </div>
 
     </div>
