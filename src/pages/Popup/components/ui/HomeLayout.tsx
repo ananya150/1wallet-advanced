@@ -13,13 +13,15 @@ import Box  from '@mui/material/Box';
 import  List  from '@mui/material/List';
 import  ListItem  from '@mui/material/ListItem';
 import  ListItemButton  from '@mui/material/ListItemButton';
-import  ListItemText  from '@mui/material/ListItemText';
-import Divider  from '@mui/material/Divider';
+import  ListItemIcon  from '@mui/material/ListItemIcon';
 import Drawer  from '@mui/material/Drawer';
 import Button  from '@mui/material/Button';
-
-
-
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton  from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Avatar from '@mui/material/Avatar';
+import accountLogo from '../../accountLogo3.jpg'
 
 // Total height = 560px
 // header height = 50px 
@@ -38,35 +40,40 @@ const Layout = ({children, value, setValue}: any) => {
 
   const list = (anchor: any) => (
     <Box
-      sx={{ width: 70, height:'560px', background:'#000000' }}
+      sx={{ width: 70, height:'560px', background:'#000000', display:'flex', flexDirection:'column', justifyContent:'space-between',  }}
       role="presentation"
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
     >
+      <div>
+        <List style={{color:'white'}}>
+            <ListItem disablePadding>
+              <ListItemButton onClick={toggleDrawer('left', true)}>
+                <ListItemIcon>
+                  <ArrowBackIcon sx={{color:'white'}} />
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+        </List>
+        <List style={{color:'white'}}>
+            <ListItem disablePadding style={{marginRight:'20px'}}>
+              <ListItemButton onClick={toggleDrawer('left', true)}>
+                <ListItemIcon>
+                  <Avatar alt="Account" src={accountLogo} />
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+        {/* <span style={{color:'white', marginLeft:'15px', fontFamily:'sans-serif'}}>Account</span> */}
+        </List>
+      </div>
       <List style={{color:'white'}}>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              {/* <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon> */}
-              <ListItemText primary={text} />
+          <ListItem disablePadding>
+            <ListItemButton onClick={toggleDrawer('left', true)}>
+              <ListItemIcon>
+                <SettingsIcon sx={{color:'white'}} />
+              </ListItemIcon>
             </ListItemButton>
           </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              {/* <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon> */}
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
       </List>
     </Box>
   );
@@ -78,30 +85,32 @@ const Layout = ({children, value, setValue}: any) => {
 
   return (
     <div className='container' style={{color: 'white'}}>
-        <div className='headerA' style={{width:'365px'}}>
-            <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' />
+        <div className='headerHome' style={{width:'365px'}}>
+            <React.Fragment key={'left'}>
+              <div style={{marginTop:'6px'}}>
+                <IconButton onClick={toggleDrawer('left', true)} >
+                  <MenuIcon sx={{color:'white'}} />
+                </IconButton>
+              </div>
+              <Drawer
+                anchor={'left'}
+                open={state}
+                onClose={toggleDrawer('left', false)}
+              >
+                {list('left')}
+              </Drawer>
+            </React.Fragment>
+
+        <img src={namedLogo} alt='logo' width="160px" height="36px" className='namedLogo' style={{marginRight:'24px'}} />
+          <div></div>
         </div>
 
         <div style={{height:'450px', overflowX:'hidden' ,overflowY:'scroll'}}>
           {children}
-          <div>
-            {['left'].map((anchor) => (
-              <React.Fragment key={anchor}>
-                <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-                <Drawer
-                  anchor={'left'}
-                  open={state}
-                  onClose={toggleDrawer(anchor, false)}
-                >
-                  {list(anchor)}
-                </Drawer>
-              </React.Fragment>
-            ))}
-          </div>
         </div>
 
 
-        <div style={{position:'relative', background:'#2b2b2b', width:'365px' }}>
+        <div style={{background:'#2b2b2b', width:'365px' }}>
           <BottomNavigation sx={{width:'365px',background:'#2b2b2b', height:'60px', bottom:'0px'}}         
           onChange={(event, newValue) => {
             setValue(newValue);

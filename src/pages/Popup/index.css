@@ -38,6 +38,15 @@ code {
   background: #222222;
 }
 
+.headerHome {
+  height: 50px;
+  width: 357px;
+  border-bottom: 1px solid rgba(103, 103, 102, 0.5);
+  display: flex;
+  justify-content: space-between;
+  background: #222222;
+}
+
 .namedLogo {
   margin-top: 7px;
 }
