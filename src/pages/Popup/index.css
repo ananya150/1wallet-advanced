@@ -304,3 +304,8 @@ div::-webkit-scrollbar-thumb {
   font-family: 'Work Sans', sans-serif;
   /* letter-spacing: 2px; */
 }
+
+.amount {
+  font-family: 'ranade', sans-serif;
+  letter-spacing: 2px;
+}

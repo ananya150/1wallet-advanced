@@ -2,80 +2,49 @@ import React, { useState } from 'react'
 import Button  from '@mui/material/Button'
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import DehazeIcon from '@mui/icons-material/Dehaze';
+import BlackButton from './ui/BlackButton';
+import PurpleButton from './ui/PurpleButton';
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const GasTank = () => {
 
     const [gasBalance, setGasBalance] = useState('1.57')
 
   return (
-    <div>
-        <div style={{display:'flex', justifyContent:'center', marginTop:'30px', marginLeft:'10px', fontSize:'24px', fontWeight:'600', color:'#fefdf9'}}>
+    <div style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
+      <div>
+        <div className='headingHome' style={{display:'flex', justifyContent:'center', height:'30px', marginTop:'30px', marginLeft:'10px', fontSize:'24px', fontWeight:'600', color:'#D3D3D3'}}>
             Gas Tank
         </div>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: '40px', fontSize:'45px', fontWeight:'600',color:'#fefdf9',width:'365px', background:'#252525'}}>
-            ${gasBalance}
+        <div className='amount' style={{display: 'flex', justifyContent: 'center', marginTop: '30px', fontSize:'45px', fontWeight:'600',color:'#fefdf9',width:'365px', }}>
+            $ {gasBalance}
         </div>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: '10px', fontSize:'16px', color:'#B2BEB5', alignItems:'center',marginRight:'10px', width:'365px', background:'#242424'}}>
-            <div>
-                Gas Left
+        <div style={{marginLeft:'35px', marginRight:'30px', marginTop:'60px', display:'flex', justifyContent:'space-between'}}>
+          <PurpleButton width='140px'>
+            <div style={{width:'130px', display: 'flex', justifyContent: 'space-between'}}>
+              <CurrencyBitcoinIcon sx={{color:'#2f2f2f'}} />
+              <div>Crypto</div>
+              <div></div>
             </div>
+          </PurpleButton>
+          <PurpleButton width='140px'>
+            <div style={{width:'130px', display: 'flex', justifyContent: 'space-between'}}>
+              <AttachMoneyIcon sx={{color:'#2f2f2f'}} />
+              <div>Fiat</div>
+              <div></div>
+            </div>
+          </PurpleButton>
         </div>
-        <div style={{display:'flex', justifyContent:'space-evenly', marginTop:'60px', width:'365px', background:'#232323'}}>
-          <Button variant='contained' size='small' startIcon={<LocalGasStationIcon />} sx={{
-              backgroundColor: "#9666cb",
-              fontSize:'13px',
-              width:'100px',
-              borderRadius: '6px',
-              ':hover': {
-                bgcolor: '#a873e5',
-              },      
-              }} 
-              >
-              Crypto
-          </Button>
-          <Button variant='contained' startIcon={<LocalGasStationIcon />} sx={{
-            backgroundColor: "#9666cb",
-            fontSize:'13px',
-            width:'100px',
-            borderRadius: '6px',
-            ':hover': {
-              bgcolor: '#a873e5',
-            },      
-            }} 
-            >
-            Fiat
-          </Button>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: '60px', fontSize:'14px', color:'#c0c0c0',width:'365px', }}>
+            No Transactions Yet
         </div>
-        <div style={{display:'flex', justifyContent:'center', marginTop:'50px', width:'365px', background:'#222222'}}>
-          <Button variant='contained' sx={{
-              backgroundColor: "#2b2b2b",
-              color:'gray',
-              fontSize:'15px',
-              width:'325px',
-              ':hover': {
-                bgcolor: '#2f2f2f',
-                color:'#fefdf9',
-              },      
-              }} 
-              >
-              Add Custom Paymasters
-            </Button>
+      </div>
+      <div style={{marginBottom:'20px', marginTop:'30px', background:'#222222'}}>
+        <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'center'}}>
+          <BlackButton text='Add New Paymaster' width='300px' />
         </div>
-        {/* <div style={{display:'flex', justifyContent:'center', marginTop:'50px', width:'365px', background:'#222222'}}>
-            <Button variant='contained' startIcon={<DehazeIcon />} sx={{
-                backgroundColor: "#9666cb",
-                fontSize:'13px',
-                width:'120px',
-                cursor:'not-allowed',
-                borderRadius: '6px',
-                ':hover': {
-                bgcolor: '#a873e5',
-                },      
-                }} 
-                >
-                Withdraw
-            </Button>
-        </div> */}
+      </div>
     </div>
   )
 }

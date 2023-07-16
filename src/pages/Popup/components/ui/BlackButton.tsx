@@ -10,11 +10,13 @@ const BlackButton = ({text, width}: Props) => {
   return (
     <Button variant='contained' sx={{
         backgroundColor: "#2c2c2c",
+        borderRadius:'10px',
         color:'gray',
         fontSize:'15px',
+        height:'50px',
         width: `${width}`,
         ':hover': {
-          bgcolor: '#2f2f2f',
+          bgcolor: '#444444',
           color:'#fefdf9',
         },      
         }} 

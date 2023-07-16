@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
 
 import BatchTransaction from './BatchTransaction';
+import GasTank from './GasTank';
+import RecentTransactions from './RecentTransactions';
 import Layout from './ui/HomeLayout';
 
 
 const Home = () => {
-  const [value, setValue] = useState('batch');
+  const [value, setValue] = useState('gas');
 
 
   return (
     <Layout value={value} setValue={setValue}>
 
       <div className='accountHome' >
-        {/* {value === 'tokens' && <TokenBalances />}
+        {/* {value === 'tokens' && <TokenBalances />} */}
         {value === 'gas' && <GasTank />}
-        {value === 'recent' && <RecentTransactions />} */}
+        {value === 'recent' && <RecentTransactions />}
         {value === 'batch' && <BatchTransaction/>}
       </div>
 
