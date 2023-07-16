@@ -19,9 +19,11 @@ code {
 
 .container {
   width: 365px;
-  height: 500px;
+  height: 560px;
   min-width: 365px;
   max-width: 365px;
+  min-height: 560px;
+  max-height: 560px;
   overflow: hidden;
   margin: auto;
   background: linear-gradient(#272727, #222222);

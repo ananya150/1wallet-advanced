@@ -110,7 +110,11 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress
   }
 
   const acouuntFoundSetupComplete = (event: any) => {
-    event.preventDefault();
+    setError(false);
+    if(inputValue === ''){
+      setError(true);
+      return;
+    }
     setName(inputValue);
     navigate('/setUpPassword');
   }
@@ -194,16 +198,16 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress
             <form onSubmit={acouuntFoundSetupComplete}>
               <div style={{display:'flex', justifyContent:'center', marginTop: '110px'}}>
                 <TextField value={inputValue} onChange={handleChange} fullWidth label="name" id="name" size="small" style={{ width: '250px', borderRadius: '120px' }} className={classes.input} InputLabelProps={{
-                style: {
-                    color: theme.palette.text.primary,
-                  },
-                }}
-                InputProps={{
                   style: {
-                    color: theme.palette.text.primary,
-                  },
-                }}
-              />
+                      color: theme.palette.text.primary,
+                    },
+                  }}
+                  InputProps={{
+                    style: {
+                      color: theme.palette.text.primary,
+                    },
+                  }}
+                />
               </div>
                 {error && (
                   <FormHelperText className='nameError' error>
@@ -215,17 +219,17 @@ const AccountSetUp = ({web3Auth, setIsLoggedIn, provider, setName, walletAddress
                     {accountSetUpState.err}
                   </div>
                 }
+              <div className='accountSetUpButton1'>
+                <Button variant='contained' sx={{
+                    backgroundColor: "#9666cb",
+                    borderRadius: '10px',
+                    ':hover': {
+                      bgcolor: '#a873e5',
+                    },      
+                    }} onClick={acouuntFoundSetupComplete}>Setup Password</Button>
+              </div>
             </form>
 
-            <div className='accountSetUpButton1'>
-              <Button variant='contained' sx={{
-                  backgroundColor: "#9666cb",
-                  borderRadius: '10px',
-                  ':hover': {
-                    bgcolor: '#a873e5',
-                  },      
-                  }} onClick={acouuntFoundSetupComplete}>Setup Password</Button>
-            </div>
           </div>
           :
           <div>
