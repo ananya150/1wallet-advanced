@@ -6,6 +6,7 @@ import RecentTransactions from './RecentTransactions';
 import TokenBalances from './TokenBalances';
 import Layout from './ui/HomeLayout';
 import Deposit from './Deposit';
+import Send from './Send';
 
 
 const Home = () => {
@@ -21,6 +22,7 @@ const Home = () => {
         {value === 'recent' && <RecentTransactions />}
         {value === 'batch' && <BatchTransaction/>}
         {value === 'deposit' && <Deposit setValue={setValue} />}
+        {value === 'send' && <Send setValue={setValue} />}
         {/* {value === 'send' && } */}
       </div>
 

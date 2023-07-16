@@ -40,7 +40,7 @@ const TokenBalances = ({value, setValue}: any) => {
         setLoading(true)
         const {walletAddress} = await getWalletInfo();
         setWalletAddress(walletAddress);
-        // await dispatch(fetchTokens(walletAddress));
+        await dispatch(fetchTokens(walletAddress));
         setLoading(false);
       }
     
@@ -63,10 +63,10 @@ const TokenBalances = ({value, setValue}: any) => {
           <PurpleButton disabled={false} onClick={handleDeposit} width='96px'>
               <div>Deposit</div>
           </PurpleButton>
-          <PurpleButton disabled={true} onClick={handleSend} width='96px'>
+          <PurpleButton disabled={true} width='96px'>
               <div>Buy</div>
           </PurpleButton>
-          <PurpleButton disabled={false} width='96px'>
+          <PurpleButton disabled={false} onClick={handleSend} width='96px'>
               <div>Send</div>
           </PurpleButton>
         </div>
