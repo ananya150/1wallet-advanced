@@ -7,7 +7,7 @@ import Layout from './ui/HomeLayout';
 
 
 const Home = () => {
-  const [value, setValue] = useState('gas');
+  const [value, setValue] = useState('recent');
 
 
   return (
