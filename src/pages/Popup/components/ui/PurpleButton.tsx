@@ -6,16 +6,17 @@ type Props = {
     width?: string;
     onClick?: any;
     disabled: boolean;
+    heigth?: string;
 }
 
-const PurpleButton = ({children, width, onClick, disabled}: Props) => {
+const PurpleButton = ({children, width, onClick, disabled, heigth}: Props) => {
   return (
     <Button variant='contained' onClick={onClick} sx={{
         backgroundColor: "#ab9ff2",
         borderRadius:'5px',
         color:'#222222',
         fontSize:'14px',
-        height:'40px',
+        height: heigth ? heigth : '40px',
         cursor: disabled? 'not-allowed': 'pointer' ,
         width: `${width}`,
         ':hover': {

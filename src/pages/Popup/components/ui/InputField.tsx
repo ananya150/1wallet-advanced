@@ -48,7 +48,7 @@ export const InputField = ({value, handleValue, isErr, errMsg, placeHolder, auto
                 onChange={handleValue}
                 fullWidth
                 className={classes.input}
-                style={{ width: '320px', borderRadius: '20px', background:'#181818' }}
+                style={{ width: '320px', borderRadius: '20px', background:'#222222' }}
                 margin="normal"
                 InputLabelProps={{
                     style: {
