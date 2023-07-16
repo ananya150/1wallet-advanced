@@ -44,6 +44,7 @@
     "emittery": "^1.0.1",
     "ethers": "^5.7.2",
     "extensionizer": "^1.0.1",
+    "framer-motion": "^10.12.21",
     "magic-sdk": "^13.4.0",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "path-browserify": "^1.0.1",
