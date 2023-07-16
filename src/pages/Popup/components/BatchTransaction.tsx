@@ -98,7 +98,7 @@ const BatchTransaction = () => {
         }
       </div>
       <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
-        <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between',}}>
+        <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between'}}>
           <BlackButton text='Clear' width='150px' />
           <BlackButton text='Send' width='150px' />
         </div>

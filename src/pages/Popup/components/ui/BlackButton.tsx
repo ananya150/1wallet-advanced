@@ -3,12 +3,13 @@ import Button  from '@mui/material/Button'
 
 type Props = {
     text: string;
-    width?: string
+    width?: string;
+    onClick?: any
 }
 
-const BlackButton = ({text, width}: Props) => {
+const BlackButton = ({text, width, onClick}: Props) => {
   return (
-    <Button variant='contained' sx={{
+    <Button variant='contained' onClick={onClick} sx={{
         backgroundColor: "#2c2c2c",
         borderRadius:'10px',
         color:'gray',

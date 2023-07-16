@@ -23,14 +23,14 @@ const GasTank = () => {
             $ {gasBalance}
         </div>
         <div style={{marginLeft:'35px', marginRight:'30px', marginTop:'60px', display:'flex', justifyContent:'space-between'}}>
-          <PurpleButton width='140px'>
+          <PurpleButton disabled={false} width='140px'>
             <div style={{width:'130px', display: 'flex', justifyContent: 'space-between'}}>
               <CurrencyBitcoinIcon sx={{color:'#2f2f2f'}} />
               <div>Crypto</div>
               <div></div>
             </div>
           </PurpleButton>
-          <PurpleButton width='140px'>
+          <PurpleButton disabled={true} width='140px'>
             <div style={{width:'130px', display: 'flex', justifyContent: 'space-between'}}>
               <AttachMoneyIcon sx={{color:'#2f2f2f'}} />
               <div>Fiat</div>

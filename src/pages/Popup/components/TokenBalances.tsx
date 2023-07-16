@@ -11,13 +11,12 @@ import noImg from '../noImg.png';
 // TODO handle deposit, buy and send functions
 
 
-const TokenBalances = () => {
+const TokenBalances = ({value, setValue}: any) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const tokens = useSelector((state: RootState) => state.tokens.tokens);
     // const totalBalance = useSelector((state: RootState) => state.tokens.totalBalance);
     const totalBalance = 7.35
-    const gasBalance = 1.57
     const [walletAddress, setWalletAddress] = useState('');
     const [loading,setLoading] = useState(false);
     const [imageLoadStatus, setImageLoadStatus] = useState<any>({});
@@ -29,13 +28,19 @@ const TokenBalances = () => {
       }));
     };
   
+    const handleDeposit = () => {
+      setValue('deposit')
+    }
+
+    const handleSend = () => {
+      setValue('send');
+    }
 
     const init = async () => {
         setLoading(true)
         const {walletAddress} = await getWalletInfo();
         setWalletAddress(walletAddress);
-        await dispatch(fetchTokens(walletAddress));
-        console.log(tokens);
+        // await dispatch(fetchTokens(walletAddress));
         setLoading(false);
       }
     
@@ -54,22 +59,14 @@ const TokenBalances = () => {
         <div className='amount' style={{display: 'flex', justifyContent: 'center', marginTop: '30px', fontSize:'45px', fontWeight:'600',color:'#fefdf9',width:'365px', }}>
             $ {totalBalance}
         </div>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: '10px', fontSize:'16px', color:'#B2BEB5', alignItems:'center',marginRight:'10px', width:'365px', background:'#242424'}}>
-            <div>
-                <LocalGasStationIcon style={{marginLeft: '10px', fontSize: '18px', color: '#B2BEB5', marginTop:'3px', marginRight:'10px'}} />
-            </div>
-                <div>
-                    ${gasBalance}
-                </div>
-        </div>
         <div style={{marginLeft:'25px', marginRight:'20px', marginTop:'40px', display:'flex', justifyContent:'space-between'}}>
-          <PurpleButton width='96px'>
+          <PurpleButton disabled={false} onClick={handleDeposit} width='96px'>
               <div>Deposit</div>
           </PurpleButton>
-          <PurpleButton width='96px'>
+          <PurpleButton disabled={true} onClick={handleSend} width='96px'>
               <div>Buy</div>
           </PurpleButton>
-          <PurpleButton width='96px'>
+          <PurpleButton disabled={false} width='96px'>
               <div>Send</div>
           </PurpleButton>
         </div>
