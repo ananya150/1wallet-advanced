@@ -9,7 +9,7 @@ import { Tooltip } from 'react-tooltip';
 import Divider from '@mui/material/Divider';
 import PaymasterSelect from './ui/Select';
 import { getWalletInfo } from '../../utils';
-import { buildExecuteUserOp } from '../../userOp';
+import { buildExecuteUserOp, getCallData, sendExecuteUserOp } from '../../userOp';
 
 
 type pageProps = {
@@ -38,11 +38,24 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
   
     const handleSend = async () => {
         const {walletAddress} = await getWalletInfo();
-        const to = address;
-        const value = String(parseFloat(amount)*(10**18));
-        const data = '0x';
-        const res = await buildExecuteUserOp(walletAddress,to,value,data);
-        console.log(res)
+        if(token.contract_ticker_symbol === 'MATIC'){
+            const to = address;
+            const value = String(parseFloat(amount)*(10**18));
+            const data = '0x';
+            const res = await sendExecuteUserOp(walletAddress,to,value,data);
+            console.log(res);
+        }else{
+            try{
+                const newAmount = String(parseFloat(amount) * (10**token.contract_decimals));
+                const callData = await getCallData(address, newAmount);
+                const value = '0';
+                const to = token.contract_address;
+                const res = await sendExecuteUserOp(walletAddress,to,value,callData);
+                console.log("Transaction hash is " ,res);
+            }catch(e){
+                console.log(e);
+            }
+        }
     }
 
 
