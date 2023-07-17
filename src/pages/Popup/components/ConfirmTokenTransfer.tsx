@@ -12,6 +12,8 @@ import { getWalletInfo } from '../../utils';
 import { buildExecuteUserOp, getCallData, sendExecuteUserOp } from '../../userOp';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import Link from '@mui/material/Link';
+import { CircularProgress } from '@mui/material';
 
 type pageProps = {
     token: Token;
@@ -28,9 +30,9 @@ type TransactionState = {
 }
 
 const initialTransactionState: TransactionState = {
-    isLoading: false,
+    isLoading: true,
     isSuccess: false,
-    isFailure: true
+    isFailure: false
 }
 
 const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , token}: pageProps) => {
@@ -40,6 +42,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
       }    
     const [copied, setCopied] = useState(false);
     const [transactionState, setTransactionState] = useState<TransactionState>(initialTransactionState);
+    const [txHash, setTxHash] = useState('')
     const handleClose = () => {
         setValue('tokens')
     }
@@ -86,7 +89,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
         
         {
             !transactionState.isLoading && !transactionState.isFailure && !transactionState.isSuccess &&
-                <div style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
+                <div className='back' style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
                     <div>
                         <div style={{display:'flex', justifyContent:'space-between', height:'30px', marginTop:'10px'}}>
                             <IconButton onClick={() => {setConfirmation(false)}}>
@@ -152,9 +155,24 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
 
         {
             transactionState.isLoading && 
-            <div style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
-                <div>
-
+            <div style={{background:'#222222', height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
+                <div style={{height:'350px', display:'flex', flexDirection:'column',justifyContent:'center'}}>
+                    <div style={{display:'flex', justifyContent:'center'}}>
+                        <div style={{width:'80px', height:'80px', borderRadius:'50%', background:'#3d3b4b', display:'flex', justifyContent:'center'}}>
+                            <div style={{height:'80px', display:'flex', flexDirection:'column',justifyContent:'center'}}>
+                                <CircularProgress sx={{color:'#a197e5', width:'50px', height:'50px'}} />
+                            </div>
+                        </div>
+                    </div>
+                    <div style={{marginTop:'10px', color:'#fefdf9', fontSize:'30px',display:'flex', justifyContent:'center'}} className="headingHome">
+                        Sending..
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px', fontSize:'15px', fontWeight:'400',color:'#676666', marginLeft:'20px', marginRight:'20px'}}>
+                            {amount} {token.contract_ticker_symbol} was successfully sent to
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '4px', fontSize:'15px', fontWeight:'400',color:'#676666',width:'365px'}}>
+                        to {address.slice(0,5)}....{address.slice(-5)}
+                    </div>
                 </div>
                 <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
                     <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between'}}>
@@ -166,7 +184,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
 
         {
             transactionState.isFailure && 
-            <div style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
+            <div style={{background:'#222222',height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
                 <div style={{height:'350px', display:'flex', flexDirection:'column',justifyContent:'center'}}>
                     <div style={{display:'flex', justifyContent:'center'}}>
                         <div style={{width:'80px', height:'80px', borderRadius:'50%', background:'#220000', display:'flex', justifyContent:'center'}}>
@@ -186,15 +204,26 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
         }
         {
             transactionState.isSuccess && 
-            <div style={{height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
+            <div style={{ background:'#222222', height:'450px', width:'365px', display:'flex', justifyContent:'space-between', flexDirection:'column', overflowX:'hidden' ,overflowY:'scroll'}}>
                 <div style={{height:'350px', display:'flex', flexDirection:'column',justifyContent:'center'}}>
                     <div style={{display:'flex', justifyContent:'center'}}>
-                        <div style={{width:'80px', height:'80px', borderRadius:'50%', background:'#22342b', display:'flex', justifyContent:'center'}}>
+                        <div style={{width:'80px', height:'80px',marginTop:'50px', borderRadius:'50%', background:'#22342b', display:'flex', justifyContent:'center'}}>
                                 <CheckIcon sx={{color:'#21e56f', marginTop:'25px',width:'30px', height:'30px'}} />
                         </div>
                     </div>
                     <div style={{marginTop:'10px', color:'#fefdf9', fontSize:'30px',display:'flex', justifyContent:'center'}} className="headingHome">
                         Sent!
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px', fontSize:'15px', fontWeight:'400',color:'#676666', marginLeft:'20px', marginRight:'20px'}}>
+                            {amount} {token.contract_ticker_symbol} was successfully sent to
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '4px', fontSize:'15px', fontWeight:'400',color:'#676666',width:'365px'}}>
+                        to {address.slice(0,5)}....{address.slice(-5)}
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px', fontSize:'15px', fontWeight:'400',color:'#aa9ff3',width:'365px'}}>
+                        {/* <Link to={`https://mumbai.polygonscan.com/tx/${txHash}`}> */}
+                            <Link href={`https://mumbai.polygonscan.com/tx/${txHash}`} underline='hover' sx={{color:'#aa9ff3'}}>View Transaction</Link>
+                        {/* </Link> */}
                     </div>
                 </div>
                 <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
