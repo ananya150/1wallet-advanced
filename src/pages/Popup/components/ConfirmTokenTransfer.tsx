@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Token } from '../store/tokens/tokensSlice';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton  from '@mui/material/IconButton';
@@ -9,11 +9,13 @@ import { Tooltip } from 'react-tooltip';
 import Divider from '@mui/material/Divider';
 import PaymasterSelect from './ui/Select';
 import { getWalletInfo } from '../../utils';
-import { buildExecuteUserOp, getCallData, sendExecuteUserOp } from '../../userOp';
+import { buildExecuteUserOp, estimateGas, getCallData, getMaticPrice, sendExecuteUserOp } from '../../userOp';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import Link from '@mui/material/Link';
 import { CircularProgress } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+
 
 type pageProps = {
     token: Token;
@@ -30,10 +32,14 @@ type TransactionState = {
 }
 
 const initialTransactionState: TransactionState = {
-    isLoading: true,
+    isLoading: false,
     isSuccess: false,
     isFailure: false
 }
+
+const openNewTab = (url: string) => {
+    window.open(url, '_blank');
+  }
 
 const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , token}: pageProps) => {
 
@@ -42,10 +48,60 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
       }    
     const [copied, setCopied] = useState(false);
     const [transactionState, setTransactionState] = useState<TransactionState>(initialTransactionState);
-    const [txHash, setTxHash] = useState('')
+    const [txHash, setTxHash] = useState<any>('')
+    const [gasPrice,setGasPrice] = useState<any>('') ;
+    const [err, setErr] = useState(false);
+    const [loading,setLoading] = useState(true);
     const handleClose = () => {
         setValue('tokens')
     }
+
+    const init = async () => {
+        const {walletAddress} = await getWalletInfo();
+        const maticPrice = await getMaticPrice();
+        console.log("Matic price is ", maticPrice)
+        try{
+            if(token.contract_ticker_symbol === 'MATIC'){
+                const to = address;
+                const value = String(parseFloat(amount)*(10**18));
+                const data = '0x';
+                const userOp = await buildExecuteUserOp(walletAddress,to,value,data);
+                console.log("User Op is ", userOp)
+                const gas = (await estimateGas(userOp)).result;
+                console.log("Gas Response is ", gas)
+                const totalGas = parseInt(gas.callGasLimit,16) + parseInt(gas.preVerificationGas,16) + parseInt(gas.verificationGas,16) 
+                console.log("Total gas is ", totalGas)
+                const price = (totalGas*maticPrice)/10**9
+                console.log(price);
+                setGasPrice(price.toFixed(5))
+            }else{
+                const newAmount = String(parseFloat(amount) * (10**token.contract_decimals));
+                const callData = await getCallData(address, newAmount);
+                const value = '0';
+                const to = token.contract_address;
+                const userOp = await buildExecuteUserOp(walletAddress,to,value,callData);
+                console.log("User Op is ", userOp)
+                const gas = (await estimateGas(userOp)).result;
+                console.log("Gas Response is ", gas)
+                const totalGas = parseInt(gas.callGasLimit,16) + parseInt(gas.preVerificationGas,16) + parseInt(gas.verificationGas,16) 
+                console.log("Total gas is ", totalGas)
+                const price = (totalGas*maticPrice)/10**9
+                console.log(price);
+                setGasPrice(price.toFixed(5))
+            }
+            setLoading(false);
+        }catch(e){
+            console.log("Some error occured");
+            console.log(e);
+            setGasPrice('Null')
+            setLoading(false);
+            setErr(true);
+        }
+    }
+
+    useEffect(() => {
+        init();
+    },[])
 
     const [selectedValue, setSelectedValue] = useState('gastank'); // Set the initial value
 
@@ -54,13 +110,27 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
     };
   
     const handleSend = async () => {
+        setTransactionState(prevState => ({
+            ...prevState, isLoading:true
+        }))
         const {walletAddress} = await getWalletInfo();
         if(token.contract_ticker_symbol === 'MATIC'){
-            const to = address;
-            const value = String(parseFloat(amount)*(10**18));
-            const data = '0x';
-            const res = await sendExecuteUserOp(walletAddress,to,value,data);
-            console.log(res);
+            try{
+                const to = address;
+                const value = String(parseFloat(amount)*(10**18));
+                const data = '0x';
+                const res = await sendExecuteUserOp(walletAddress,to,value,data);
+                console.log(res);
+                setTxHash(res);
+                setTransactionState(prevState => ({
+                    ...prevState, isLoading:false , isSuccess:true
+                }))
+            }catch(e){
+                console.log(e);
+                setTransactionState(prevState => ({
+                    ...prevState, isLoading:false , isFailure:true
+                }))
+            }
         }else{
             try{
                 const newAmount = String(parseFloat(amount) * (10**token.contract_decimals));
@@ -69,8 +139,14 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                 const to = token.contract_address;
                 const res = await sendExecuteUserOp(walletAddress,to,value,callData);
                 console.log("Transaction hash is " ,res);
+                setTransactionState(prevState => ({
+                    ...prevState, isLoading:false , isSuccess:true
+                }))
             }catch(e){
                 console.log(e);
+                setTransactionState(prevState => ({
+                    ...prevState, isLoading:false , isFailure:true
+                }))
             }
         }
     }
@@ -122,10 +198,14 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                                 <Divider sx={{color:'black'}} />
                                 <div style={{display:'flex', justifyContent:'space-between', paddingTop:'10px', paddingBottom:'10px', width:'300px'}}>
                                     <div style={{color:'#808080',  marginLeft:'15px', fontSize:'17px'}}>
-                                        Network Fee
+                                        Estimated Fee
                                     </div>
                                     <div style={{color:'#fefdf9', marginRight:'15px', fontSize:'17px'}}>
-                                        $ 0.004
+                                        {
+                                            loading ?
+                                            <Skeleton animation='wave' variant="text" sx={{ fontSize: '1rem', width:'50px',bgcolor: 'grey.800' }} />:
+                                            <div>$ {gasPrice}</div>
+                                        }
                                     </div>
                                 </div>
                                 <Divider sx={{color:'black'}} />
@@ -168,10 +248,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                         Sending..
                     </div>
                     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px', fontSize:'15px', fontWeight:'400',color:'#676666', marginLeft:'20px', marginRight:'20px'}}>
-                            {amount} {token.contract_ticker_symbol} was successfully sent to
-                    </div>
-                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '4px', fontSize:'15px', fontWeight:'400',color:'#676666',width:'365px'}}>
-                        to {address.slice(0,5)}....{address.slice(-5)}
+                            {amount} {token.contract_ticker_symbol} to {address.slice(0,5)}....{address.slice(-5)}
                     </div>
                 </div>
                 <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
@@ -222,7 +299,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                     </div>
                     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px', fontSize:'15px', fontWeight:'400',color:'#aa9ff3',width:'365px'}}>
                         {/* <Link to={`https://mumbai.polygonscan.com/tx/${txHash}`}> */}
-                            <Link href={`https://mumbai.polygonscan.com/tx/${txHash}`} underline='hover' sx={{color:'#aa9ff3'}}>View Transaction</Link>
+                            <Link onClick={() => openNewTab(`https://mumbai.polygonscan.com/tx/${txHash}`)} underline='hover' sx={{color:'#aa9ff3',cursor:'pointer'}}>View Transaction</Link>
                         {/* </Link> */}
                     </div>
                 </div>
