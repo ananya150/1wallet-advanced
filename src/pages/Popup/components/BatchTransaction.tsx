@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getBtachedTransactions, removeElement, BatchTransactionItem } from '../../batch';
+import { getBtachedTransactions, removeElement, BatchTransactionItem, clearAllBatch } from '../../batch';
 import { Reorder } from "framer-motion";
 import { Item } from "./batch/item";
 import BlackButton from './ui/BlackButton';
@@ -40,6 +40,10 @@ const BatchTransaction = () => {
 
   const [transactions, setTransaction] = useState<BatchTransactionItem[]>([])
 
+  const handleClear = async () => {
+    const newTxs = await clearAllBatch();
+    setTransaction(newTxs);
+  }
 
   useEffect(() => {
     const init = async () => {
@@ -59,7 +63,7 @@ const BatchTransaction = () => {
         {
           transactions.length === 0 
           ?
-          <div style={{display:'flex', justifyContent:'center', height:'30px', marginTop:'190px', fontSize:'15px', fontWeight:'500', color:'#B2BEB5'}}>
+          <div style={{display:'flex', justifyContent:'center', height:'30px', marginTop:'150px', fontSize:'15px', fontWeight:'500', color:'#B2BEB5'}}>
             No Stored Transactions
           </div>
           :
@@ -76,7 +80,7 @@ const BatchTransaction = () => {
       </div>
       <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
         <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between'}}>
-          <BlackButton text='Clear' width='150px' />
+          <BlackButton onClick={handleClear} text='Clear' width='150px' />
           <BlackButton text='Send' width='150px' />
         </div>
       </div>
