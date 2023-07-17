@@ -4,6 +4,7 @@ import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
+import Typography  from '@mui/material/Typography';
 
 const theme = createTheme({
     palette: {
@@ -19,7 +20,7 @@ const theme = createTheme({
   const useStyles = makeStyles((theme) => ({
   input: {
     '& .MuiInputBase-input': {
-        background: '#121212',
+        background: '#222222',
       },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
@@ -99,7 +100,10 @@ export const InputFieldWithButton = ({value,setValue, handleValue, isErr, errMsg
                     endAdornment: (
                       <InputAdornment position="end">
                         <Button onClick={handleMaximizeClick} variant="text" sx={{color: '#ab9ff2', background:'#121212'}}>
-                          Max
+                          <Typography>
+                            <span>Max</span><br/> 
+                            <span style={{fontSize:'10px'}}>{maxValue}</span>
+                          </Typography>
                         </Button>
                       </InputAdornment>
                     ),

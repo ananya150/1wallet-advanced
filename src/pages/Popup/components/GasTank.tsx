@@ -44,7 +44,7 @@ const GasTank = () => {
       </div>
       <div style={{marginBottom:'20px', marginTop:'30px', background:'#222222'}}>
         <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'center'}}>
-          <BlackButton text='Add New Paymaster' width='300px' />
+          <BlackButton disabled={true} text='Add New Paymaster' width='300px' />
         </div>
       </div>
     </div>

@@ -7,10 +7,11 @@ import { logout } from '../utils/web3authUtils';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography'
 import { getKey } from '../utils/ethUtils';
-import { deriveEncryptionKey, encryptPrivateKey, hashPassword } from '../utils/cryptoUtils';
+
 import { useNavigate } from 'react-router-dom';
-import { initWallet, login } from '../../utils';
 import { CircularProgress } from '@mui/material';
+import { encryptPrivateKey, generateEncryptionKey, hashPassword } from '../../cryptoUtils';
+import { initWallet, login } from '../../utils';
 
 
 const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}: any) => {
@@ -35,13 +36,12 @@ const SetUpPassword = ({provider, name, web3Auth, setIsLoggedIn, walletAddress}:
     setLoading(true);
     const key = await getKey(provider);
     const passwordHash = await hashPassword(password);
-    const aesKey = await deriveEncryptionKey(password);
-    const encryptedSigningKey = await encryptPrivateKey(aesKey, key);
+    const aesKey = generateEncryptionKey(password);
+
+    const encryptedKey =  encryptPrivateKey(key,aesKey);
     try{
-      console.log(name)
-      await initWallet(walletAddress, encryptedSigningKey, passwordHash, name);
-      await login(aesKey);
-      // fetch data
+      await initWallet(walletAddress, encryptedKey, passwordHash, name);
+      await login(password);
       setLoading(false);
       navigate('/home')
     }catch(e){

@@ -1,6 +1,5 @@
 import React,{useState, useEffect, useRef} from 'react'
 import {useNavigate} from 'react-router-dom';
-import { deriveEncryptionKey } from '../utils/cryptoUtils';
 import namedLogo from "../namedLogo.png";
 import iconLogo from "../iconLogo2.png";
 import Button from "@mui/material/Button";
@@ -91,7 +90,6 @@ const Login = () => {
 
   const init = async () => {
     const isLoggedIn = await loginFound();
-    console.log("Loggen in found ", isLoggedIn);
     //fetch data
     if(isLoggedIn) navigate('/home');
   }
@@ -111,8 +109,8 @@ const Login = () => {
       setPasswordErr(true);
       return;
     }
-    const aesKey = await deriveEncryptionKey(password);
-    await login(aesKey);
+
+    await login(password);
     // fetch data
     navigate('/home');
   }

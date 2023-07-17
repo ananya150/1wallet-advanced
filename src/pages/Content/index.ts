@@ -1,5 +1,5 @@
 async function registerContentScript() {
-  await chrome.runtime.sendMessage({ method: "inject script" });
+  await chrome.runtime.sendMessage({ method: "inject_script" });
 }
 
 registerContentScript();

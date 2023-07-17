@@ -33,7 +33,6 @@ type pageProps = {
 
 const SendToken = ({token, setTokenSelected, setValue}: pageProps) => {
     const maxAmount = parseFloat(token.balance)/(10**token.contract_decimals)
-    console.log(maxAmount)
     const [address, setAddress] = useState('');
     const [addressErr, setAddressErr] = useState(false);
     const handleAddress = (event: any) => {

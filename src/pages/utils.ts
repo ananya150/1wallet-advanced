@@ -1,4 +1,7 @@
 // walletAddress, encryptedKey, passwordHash, name
+import { providers, Wallet } from 'ethers';
+import exconfig from '../exconfig';
+import { decryptEncryptionKey, generateEncryptionKey } from './cryptoUtils';
 
 export const initWallet = async (walletAddress: string, encryptedKey: any, passwordHash: any, name: string) => {
     await chrome.storage.local.set({walletAddress: walletAddress});
@@ -61,4 +64,21 @@ export const getWalletInfo = async () => {
     const {name} = await chrome.storage.local.get(['name']);
     return {walletAddress, name};
 }
+
+export const getSigner = async () => {
+    const isLoggedIn = await loginFound();
+    if(!isLoggedIn) return null;
+
+    const {aesKey} = await chrome.storage.local.get(['aesKey']);
+    const encryptionKey = generateEncryptionKey(aesKey);
+    const {encryptedKey} = await chrome.storage.local.get(['encryptedKey']);
+
+    const privKey = decryptEncryptionKey(encryptedKey, encryptionKey);
+    
+    const provider = new providers.JsonRpcProvider(exconfig.network.provider)
+    const signer = new Wallet(privKey!,provider);
+    return signer;
+}
+
+
 

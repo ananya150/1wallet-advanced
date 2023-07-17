@@ -1,5 +1,6 @@
 /// <reference types="chrome"/>
-import { getWalletInfo, logout, resetWallet } from "../utils";
+import { buildExecuteUserOp } from "../userOp";
+import { getSigner, getWalletInfo, loginFound, logout, resetWallet } from "../utils";
 import { Request } from "./types";
 console.log("Statting main service");
 
@@ -11,7 +12,7 @@ chrome.runtime.onMessage.addListener(
     function(request: Request, sender: any, sendResponse: any){
 
       // injecting the provider
-      if (request.method === "inject script") {
+      if (request.method === "inject_script") {
 
         chrome.scripting
         .executeScript({
@@ -23,7 +24,7 @@ chrome.runtime.onMessage.addListener(
      }
 
 
-     // Wallet methods
+     // Wallet Connection methods
 
      // getting the address
      if(request.method === "eth_requestAccounts") {
@@ -37,6 +38,19 @@ chrome.runtime.onMessage.addListener(
       });
     }
 
+
+    // Wallet execution methods
+    if(request.method === "execute_Transaction"){
+      const {to, value, data, walletAddress } = request.params;
+      buildExecuteUserOp(walletAddress, to, value, data)
+        .then((userOp) => {
+          sendResponse({userOp: userOp, error:null});
+        })
+        .catch((error) => {
+          console.log(error);
+          sendResponse({error: error, userOp:null})
+        })
+    }
 
 
 

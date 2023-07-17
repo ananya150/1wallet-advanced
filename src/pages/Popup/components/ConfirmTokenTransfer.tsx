@@ -8,6 +8,8 @@ import PurpleButton from './ui/PurpleButton';
 import { Tooltip } from 'react-tooltip';
 import Divider from '@mui/material/Divider';
 import PaymasterSelect from './ui/Select';
+import { getWalletInfo } from '../../utils';
+import { buildExecuteUserOp } from '../../userOp';
 
 
 type pageProps = {
@@ -34,6 +36,14 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
       setSelectedValue(event.target.value);
     };
   
+    const handleSend = async () => {
+        const {walletAddress} = await getWalletInfo();
+        const to = address;
+        const value = String(parseFloat(amount)*(10**18));
+        const data = '0x';
+        const res = await buildExecuteUserOp(walletAddress,to,value,data);
+        console.log(res)
+    }
 
 
     const handleCopy = async () => {
@@ -99,7 +109,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                 <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between'}}>
                     <BlackButton text='Close' onClick={handleClose} width='96px' />
                     <BlackButton text='Store' width='96px' />
-                    <PurpleButton disabled={false} heigth={'50px'} width='96px'>
+                    <PurpleButton disabled={false} onClick={handleSend} heigth={'50px'} width='96px'>
                         <div>Send</div>
                     </PurpleButton>
                 </div>
