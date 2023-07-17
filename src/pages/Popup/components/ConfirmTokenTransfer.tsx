@@ -15,7 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Link from '@mui/material/Link';
 import { CircularProgress } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
-
+import { BatchTransactionItem, addElementToBatch } from '../../batch';
 
 type pageProps = {
     token: Token;
@@ -160,6 +160,36 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
         }
     }
 
+    const handleStoreTransaction = async () => {
+        if(token.contract_ticker_symbol === 'MATIC'){
+            const to = address;
+            const value = String(parseFloat(amount));
+            const data = '0x';
+
+            const transaction: BatchTransactionItem = {
+                to:to,
+                amount:value,
+                data:data,
+                id: String(Date.now()),
+                label: 'MATIC'
+            }
+            await addElementToBatch(transaction);
+        }else{
+            const newAmount = String(parseFloat(amount) * (10**token.contract_decimals));
+            const callData = await getCallData(address, newAmount);
+            const value = '0';
+            const to = token.contract_address;
+            const transaction: BatchTransactionItem = {
+                to:to,
+                amount:value,
+                data:callData,
+                id: String(Date.now()),
+                label: token.contract_ticker_symbol
+            }
+            await addElementToBatch(transaction);
+        }
+        setValue('batch')
+    }
 
     const handleCopy = async () => {
         setCopied(true);
@@ -232,7 +262,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                     <div style={{marginBottom:'20px', marginTop:'30px',  background:'#222222', width:'365px'}}>
                         <div style={{marginLeft:'20px', marginRight:'15px', display:'flex', justifyContent:'space-between'}}>
                             <BlackButton text='Close' onClick={handleClose} width='96px' />
-                            <BlackButton text='Store' width='96px' />
+                            <BlackButton text='Store' onClick={handleStoreTransaction} width='96px' />
                             <PurpleButton disabled={false} onClick={handleSend} heigth={'50px'} width='96px'>
                                 <div>Send</div>
                             </PurpleButton>

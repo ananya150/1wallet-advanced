@@ -9,60 +9,37 @@ import BlackButton from './ui/BlackButton';
 
 //TODO Complete send and clear functions
 
-const dummTx1: BatchTransactionItem = {
-  amount: '0.06',
-  data:'akjsnsk',
-  label:'MATIC',
-  id: 'smnkjdn',
-  to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
-}
+// const dummTx1: BatchTransactionItem = {
+//   amount: '0.06',
+//   data:'akjsnsk',
+//   label:'MATIC',
+//   id: 'smnkjdn',
+//   to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
+// }
 
-const dummTx2: BatchTransactionItem = {
-  amount: '0.46',
-  data:'akjsnsk',
-  label:'MATIC',
-  id: 'ejhfbue',
-  to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
-}
+// const dummTx2: BatchTransactionItem = {
+//   amount: '0.46',
+//   data:'akjsnsk',
+//   label:'MATIC',
+//   id: 'ejhfbue',
+//   to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
+// }
 
-const dummTx3: BatchTransactionItem = {
-  amount: '0.1',
-  data:'akjsnsk',
-  label:'MATIC',
-  id: 'eiurhnvf',
-  to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
-}
+// const dummTx3: BatchTransactionItem = {
+//   amount: '0.1',
+//   data:'akjsnsk',
+//   label:'MATIC',
+//   id: 'eiurhnvf',
+//   to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
+// }
 
-const dummTx4: BatchTransactionItem = {
-  amount: '0.06',
-  data:'akjsnsk',
-  label:'MATIC',
-  id: 'smnkjshgdbsdn',
-  to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
-}
 
-const dummTx5: BatchTransactionItem = {
-  amount: '0.06',
-  data:'akjsnsk',
-  label:'MATIC',
-  id: 'smnkjdfjndkdn',
-  to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
-}
-
-const dummTx6: BatchTransactionItem = {
-  amount: '0.06',
-  data:'akjsnsk',
-  label:'MATIC',
-  id: 'smnkjdwiejwn',
-  to:'0x85530eD1f8e9Bbd3e093e0aDB7C6B8966A0eca22'
-}
-
-const initialItems = [dummTx1, dummTx2, dummTx3];
+// const initialItems = [dummTx1, dummTx2, dummTx3];
 
 const BatchTransaction = () => {
 
   const [transactions, setTransaction] = useState<BatchTransactionItem[]>([])
-  const [items, setItems] = useState(initialItems);
+
 
   useEffect(() => {
     const init = async () => {
@@ -80,16 +57,16 @@ const BatchTransaction = () => {
             Batch Transactions
         </div>
         {
-          transactions.length !== 0 
+          transactions.length === 0 
           ?
           <div style={{display:'flex', justifyContent:'center', height:'30px', marginTop:'190px', fontSize:'15px', fontWeight:'500', color:'#B2BEB5'}}>
             No Stored Transactions
           </div>
           :
           <div style={{marginTop:'50px', width:'365px'}} >
-            <Reorder.Group axis="y" onReorder={setItems} values={items}>
-              {items.map((item, i) => (
-                <Item key={item.id} transaction={item} />
+            <Reorder.Group axis="y" onReorder={setTransaction} values={transactions}>
+              {transactions.map((item, i) => (
+                <Item key={item.id} transaction={item} setTransaction={setTransaction} />
               ))}
             </Reorder.Group>
 

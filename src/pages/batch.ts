@@ -22,9 +22,8 @@ export const addElementToBatch = async (element: BatchTransactionItem) => {
 export const removeElement = async (id: string) => {
     const {batchTransactions} = await chrome.storage.local.get(['batchTransactions']);
     const newTx: BatchTransactionItem[] = batchTransactions;
-
     const indexToRemove = newTx.findIndex(element => element.id === id);
-    if(indexToRemove){
+    if(indexToRemove !== undefined){
         newTx.splice(indexToRemove, 1);
         await chrome.storage.local.set({batchTransactions: newTx});
     }
