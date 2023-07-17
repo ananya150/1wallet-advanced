@@ -181,7 +181,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
             const to = token.contract_address;
             const transaction: BatchTransactionItem = {
                 to:to,
-                amount:value,
+                amount:String(parseFloat(amount)),
                 data:callData,
                 id: String(Date.now()),
                 label: token.contract_ticker_symbol
@@ -216,7 +216,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                             <div></div>
                         </div>
                         <div className='amount' style={{display: 'flex', justifyContent: 'center', marginTop: '30px', fontSize:'35px', fontWeight:'600',color:'#fefdf9',width:'365px'}}>
-                            {amount} {token.contract_ticker_symbol}
+                            {parseFloat(amount).toFixed(4)} {token.contract_ticker_symbol}
                         </div>
                         <div style={{display: 'flex', justifyContent: 'center', marginTop: '8px', fontSize:'15px', fontWeight:'400',color:'#808080',width:'365px'}}>
                             to &nbsp; <a data-tooltip-id="address-tooltip" onClick={handleCopy} style={{cursor:'pointer'}}
