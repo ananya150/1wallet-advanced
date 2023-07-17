@@ -8,13 +8,15 @@ export class SimpleAccount extends UserOperationBuilder {
     private signer: ethers.Signer;
     private provider: ethers.providers.JsonRpcProvider;
     private entryPoint: EntryPoint;
+    public paymaster: string;
     proxy: SimpleAccountImpl;
 
     private constructor (
         signer: ethers.Signer,
         bundlerRpcUrl: string,
         walletAddress: string,
-        opts?: IPresetBuilderOpts
+        hasPaymaster?: boolean,
+        opts?: IPresetBuilderOpts,
     ) {
         super();
         this.signer = signer;
@@ -27,6 +29,8 @@ export class SimpleAccount extends UserOperationBuilder {
             walletAddress,
             this.provider
         );
+        this.paymaster = '0x';
+        if(hasPaymaster) this.paymaster = '0x7908fabA3499d6da699E4A67DE2130F9FbAEB924';
     }
 
     private resolveAccount: UserOperationMiddlewareFn = async (ctx) => {
@@ -37,15 +41,16 @@ export class SimpleAccount extends UserOperationBuilder {
         signer: ethers.Signer,
         rpcUrl: string,
         address: string,
+        hasPaymaster?: boolean,
         opts?: IPresetBuilderOpts
     ) : Promise<SimpleAccount> {
-        const instance = new SimpleAccount(signer, rpcUrl, address, opts);
+        const instance = new SimpleAccount(signer, rpcUrl, address, hasPaymaster ,opts);
         const base = instance.useDefaults({
             sender: instance.proxy.address,
             signature: await instance.signer.signMessage(
                 ethers.utils.arrayify(ethers.utils.keccak256("0xdead"))
             ),
-            paymasterAndData: "0x7908fabA3499d6da699E4A67DE2130F9FbAEB924",
+            paymasterAndData: instance.paymaster,
             preVerificationGas: "0xC400",
             verificationGasLimit: "0x1D4C0"
         })

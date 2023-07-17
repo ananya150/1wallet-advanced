@@ -51,21 +51,26 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
     const [txHash, setTxHash] = useState<any>('')
     const [gasPrice,setGasPrice] = useState<any>('') ;
     const [err, setErr] = useState(false);
-    const [loading,setLoading] = useState(true);
+    const [loading,setLoading] = useState(false);
     const handleClose = () => {
         setValue('tokens')
     }
 
     const init = async () => {
+        setLoading(true);
         const {walletAddress} = await getWalletInfo();
         const maticPrice = await getMaticPrice();
         console.log("Matic price is ", maticPrice)
+        let hasPaymaster = true;
+        if(selectedValue === 'matic'){
+            hasPaymaster = false;
+        }
         try{
             if(token.contract_ticker_symbol === 'MATIC'){
                 const to = address;
                 const value = String(parseFloat(amount)*(10**18));
                 const data = '0x';
-                const userOp = await buildExecuteUserOp(walletAddress,to,value,data);
+                const userOp = await buildExecuteUserOp(walletAddress,to,value,data,hasPaymaster);
                 console.log("User Op is ", userOp)
                 const gas = (await estimateGas(userOp)).result;
                 console.log("Gas Response is ", gas)
@@ -79,7 +84,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                 const callData = await getCallData(address, newAmount);
                 const value = '0';
                 const to = token.contract_address;
-                const userOp = await buildExecuteUserOp(walletAddress,to,value,callData);
+                const userOp = await buildExecuteUserOp(walletAddress,to,value,callData,hasPaymaster);
                 console.log("User Op is ", userOp)
                 const gas = (await estimateGas(userOp)).result;
                 console.log("Gas Response is ", gas)
@@ -99,11 +104,11 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
         }
     }
 
+    const [selectedValue, setSelectedValue] = useState('gastank'); // Set the initial value
     useEffect(() => {
         init();
-    },[])
+    },[selectedValue])
 
-    const [selectedValue, setSelectedValue] = useState('gastank'); // Set the initial value
 
     const handleSelectChange = (event: any) => {
       setSelectedValue(event.target.value);
@@ -113,13 +118,17 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
         setTransactionState(prevState => ({
             ...prevState, isLoading:true
         }))
+        let hasPaymaster = true;
+        if(selectedValue === 'matic'){
+            hasPaymaster = false;
+        }
         const {walletAddress} = await getWalletInfo();
         if(token.contract_ticker_symbol === 'MATIC'){
             try{
                 const to = address;
                 const value = String(parseFloat(amount)*(10**18));
                 const data = '0x';
-                const res = await sendExecuteUserOp(walletAddress,to,value,data);
+                const res = await sendExecuteUserOp(walletAddress,to,value,data,hasPaymaster);
                 console.log(res);
                 setTxHash(res);
                 setTransactionState(prevState => ({
@@ -137,7 +146,7 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                 const callData = await getCallData(address, newAmount);
                 const value = '0';
                 const to = token.contract_address;
-                const res = await sendExecuteUserOp(walletAddress,to,value,callData);
+                const res = await sendExecuteUserOp(walletAddress,to,value,callData,hasPaymaster);
                 console.log("Transaction hash is " ,res);
                 setTransactionState(prevState => ({
                     ...prevState, isLoading:false , isSuccess:true

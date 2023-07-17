@@ -5,13 +5,13 @@ import { getSigner } from "./utils";
 import { BundlerJsonRpcProvider } from "userop";
 import { Interface } from "ethers/lib/utils";
 
-export const sendExecuteUserOp = async (walletAddress:any, to:string, value: string, data:string) => {
+export const sendExecuteUserOp = async (walletAddress:any, to:string, value: string, data:string, hasPaymaster:boolean) => {
     const signer = await getSigner();
     if(!signer) return {}
     const rpcUrl = exconfig.network.provider;
     const entryPoint = exconfig.network.entryPointAddress;
     const client = await Client.init(rpcUrl, {entryPoint:entryPoint});
-    const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress);
+    const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress,hasPaymaster);
     try{
         const res = await client.sendUserOperation(
             simpleAccount.execute(to,value,data),
@@ -27,13 +27,13 @@ export const sendExecuteUserOp = async (walletAddress:any, to:string, value: str
     }
 }
 
-export const buildExecuteUserOp = async (walletAddress:any, to:string, value: string, data:string) => {
+export const buildExecuteUserOp = async (walletAddress:any, to:string, value: string, data:string , hasPaymaster: boolean) => {
     const signer = await getSigner();
     if(!signer) return {}
     const rpcUrl = exconfig.network.provider;
     const entryPoint = exconfig.network.entryPointAddress;
     const client = await Client.init(rpcUrl, {entryPoint:entryPoint});
-    const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress);
+    const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress, hasPaymaster);
     const res = await client.buildUserOperation(
         simpleAccount.execute(to,value,data)
     )
