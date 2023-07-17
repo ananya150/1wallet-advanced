@@ -10,7 +10,7 @@ import Send from './Send';
 
 
 const Home = () => {
-  const [value, setValue] = useState('tokens');
+  const [value, setValue] = useState('batch');
 
 
   return (
@@ -20,7 +20,7 @@ const Home = () => {
         {value === 'tokens' && <TokenBalances value={value} setValue={setValue} />}
         {value === 'gas' && <GasTank />}
         {value === 'recent' && <RecentTransactions />}
-        {value === 'batch' && <BatchTransaction/>}
+        {value === 'batch' && <BatchTransaction setValue={setValue}/>}
         {value === 'deposit' && <Deposit setValue={setValue} />}
         {value === 'send' && <Send setValue={setValue} />}
         {/* {value === 'send' && } */}

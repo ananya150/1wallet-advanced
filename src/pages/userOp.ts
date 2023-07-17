@@ -4,6 +4,7 @@ import { SimpleAccount } from "./Background/account";
 import { getSigner } from "./utils";
 import { BundlerJsonRpcProvider } from "userop";
 import { Interface } from "ethers/lib/utils";
+import { BatchTransactionItem } from "./batch";
 
 export const sendExecuteUserOp = async (walletAddress:any, to:string, value: string, data:string, hasPaymaster:boolean) => {
     const signer = await getSigner();
@@ -39,6 +40,28 @@ export const buildExecuteUserOp = async (walletAddress:any, to:string, value: st
     )
     return res;
 }
+
+export const buildBatchExecuteUserOp = async (walletAddress: any, transactions: BatchTransactionItem[], hasPaymaster:boolean) => {
+    const signer = await getSigner();
+    if(!signer) return {}
+    const tos = [];
+    const datas = [];
+    for(let i = 0; i<transactions.length; i++){
+        tos.push(transactions[i].to);
+        datas.push(transactions[i].data);
+    }
+    console.log(tos);
+    console.log(datas);
+    // const rpcUrl = exconfig.network.provider;
+    // const entryPoint = exconfig.network.entryPointAddress;
+    // const client = await Client.init(rpcUrl, {entryPoint:entryPoint});
+    // const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress,hasPaymaster);
+    // const res = await client.buildUserOperation(
+    //     simpleAccount.executeBatch()
+    // )
+}
+
+
 
 export const getCallData = async (to: string, amount: string) => {
     const tokenAbi = ['function transfer(address to, uint256 value)'];
