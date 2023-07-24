@@ -1,9 +1,9 @@
+import { Token } from "./Popup/store/tokens/tokensSlice";
 export type BatchTransactionItem = {
     id: string;
-    label: string;
+    token: Token;
     to: string;
     amount: string;
-    data: string;
 }
 
 export const getBtachedTransactions = async() => {

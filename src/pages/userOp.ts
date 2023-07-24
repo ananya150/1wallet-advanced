@@ -47,18 +47,53 @@ export const buildBatchExecuteUserOp = async (walletAddress: any, transactions: 
     const tos = [];
     const datas = [];
     for(let i = 0; i<transactions.length; i++){
-        tos.push(transactions[i].to);
-        datas.push(transactions[i].data);
+        tos.push(transactions[i].token.contract_address);
+        const newAmount = String(parseFloat(transactions[i].amount) * (10**transactions[i].token.contract_decimals));
+        const callData = await getCallData(transactions[i].to,newAmount);
+        datas.push(callData);
     }
     console.log(tos);
     console.log(datas);
-    // const rpcUrl = exconfig.network.provider;
-    // const entryPoint = exconfig.network.entryPointAddress;
-    // const client = await Client.init(rpcUrl, {entryPoint:entryPoint});
-    // const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress,hasPaymaster);
-    // const res = await client.buildUserOperation(
-    //     simpleAccount.executeBatch()
-    // )
+    const rpcUrl = exconfig.network.provider;
+    const entryPoint = exconfig.network.entryPointAddress;
+    const client = await Client.init(rpcUrl, {entryPoint:entryPoint});
+    const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress,hasPaymaster);
+    const res = await client.buildUserOperation(
+        simpleAccount.executeBatch(tos,datas)
+    )
+    return res;
+}
+
+export const sendBatchExecuteUserOp = async (walletAddress: any, transactions: BatchTransactionItem[], hasPaymaster:boolean) => {
+    const signer = await getSigner();
+    if(!signer) return {}
+    const tos = [];
+    const datas = [];
+    for(let i = 0; i<transactions.length; i++){
+        tos.push(transactions[i].token.contract_address);
+        const newAmount = String(parseFloat(transactions[i].amount) * (10**transactions[i].token.contract_decimals));
+        const callData = await getCallData(transactions[i].to,newAmount);
+        datas.push(callData);
+    }
+    console.log(tos);
+    console.log(datas);
+    const rpcUrl = exconfig.network.provider;
+    const entryPoint = exconfig.network.entryPointAddress;
+    const client = await Client.init(rpcUrl, {entryPoint:entryPoint});
+    const simpleAccount = await SimpleAccount.init(signer!,rpcUrl,walletAddress,hasPaymaster);
+    try{
+        const res = await client.sendUserOperation(
+            simpleAccount.executeBatch(tos,datas),
+            { onBuild: (op) => console.log("Signed UserOperation:", op) }
+        )
+        console.log("Waiting for transaction...");
+        const ev = await res.wait();
+        console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+        return ev?.transactionHash ?? null;
+    }catch(e){
+        console.log(e);
+        return null;
+    }
 }
 
 

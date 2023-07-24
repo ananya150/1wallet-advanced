@@ -6,9 +6,17 @@ import IconButton  from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import Skeleton from '@mui/material/Skeleton';
 import PaymasterSelect from './ui/Select';
+import { getWalletInfo } from '../../utils';
+import { buildBatchExecuteUserOp, estimateGas , sendBatchExecuteUserOp} from '../../userOp';
+import { BatchTransactionItem } from '../../batch';
 
+type props = {
+    transactions: BatchTransactionItem[];
+    setValue: any;
+    setSend:any;
+}
 
-const ConfirmBatchTransaction = ({transactions, setValue, setSend}: any) => {
+const ConfirmBatchTransaction = ({transactions, setValue, setSend}: props) => {
 
     const [loading,setLoading] = useState(false);
     const [gasPrice,setGasPrice] = useState<any>('');
@@ -19,10 +27,14 @@ const ConfirmBatchTransaction = ({transactions, setValue, setSend}: any) => {
       };
 
     const handleClose = () => {
-
+        setValue('tokens');
     }
-    const handleSend = () => {
-
+    const handleSend = async () => {
+        const {walletAddress} = await getWalletInfo();
+        // const userOp = await buildBatchExecuteUserOp(walletAddress,transactions,true);
+        // const res = await estimateGas(userOp);
+        const res = await sendBatchExecuteUserOp(walletAddress,transactions,false);
+        console.log(res);
     }
 
   return (

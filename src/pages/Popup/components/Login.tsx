@@ -8,6 +8,7 @@ import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import Typography from "@mui/material/Typography";
 import { loginFound, login, checkPassword } from '../../utils';
+import PurpleButton from './ui/PurpleButton';
 
 const theme = createTheme({
   palette: {
@@ -156,13 +157,8 @@ const Login = () => {
           Incorrect Password
         </Typography>
       )}
-      <div style={{display: 'flex', justifyContent:'center', marginTop:'20px'}}>
-        <Button variant='contained' sx={{
-          backgroundColor: "#9666cb",
-          ':hover': {
-            bgcolor: '#a873e5',
-          },      
-          }} onClick={loginWallet}>Login</Button>
+      <div style={{display: 'flex', justifyContent:'center', marginTop:'60px'}}>
+        <PurpleButton disabled={false} width="320px" onClick={loginWallet}>Login</PurpleButton>
       </div>
     </div>
   )

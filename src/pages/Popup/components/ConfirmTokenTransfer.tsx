@@ -130,6 +130,12 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                 const data = '0x';
                 const res = await sendExecuteUserOp(walletAddress,to,value,data,hasPaymaster);
                 console.log(res);
+                if(res === null){
+                    setTransactionState(prevState => ({
+                        ...prevState, isLoading:false , isFailure:true
+                    }))
+                    return;
+                }
                 setTxHash(res);
                 setTransactionState(prevState => ({
                     ...prevState, isLoading:false , isSuccess:true
@@ -147,6 +153,12 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
                 const value = '0';
                 const to = token.contract_address;
                 const res = await sendExecuteUserOp(walletAddress,to,value,callData,hasPaymaster);
+                if(res === null){
+                    setTransactionState(prevState => ({
+                        ...prevState, isLoading:false , isFailure:true
+                    }))
+                    return;
+                }
                 console.log("Transaction hash is " ,res);
                 setTransactionState(prevState => ({
                     ...prevState, isLoading:false , isSuccess:true
@@ -161,33 +173,17 @@ const ConfirmTokenTransfer = ({setConfirmation, address , setValue, amount , tok
     }
 
     const handleStoreTransaction = async () => {
-        if(token.contract_ticker_symbol === 'MATIC'){
-            const to = address;
-            const value = String(parseFloat(amount));
-            const data = '0x';
-
-            const transaction: BatchTransactionItem = {
-                to:to,
-                amount:value,
-                data:data,
-                id: String(Date.now()),
-                label: 'MATIC'
-            }
-            await addElementToBatch(transaction);
-        }else{
-            const newAmount = String(parseFloat(amount) * (10**token.contract_decimals));
-            const callData = await getCallData(address, newAmount);
-            const value = '0';
-            const to = token.contract_address;
-            const transaction: BatchTransactionItem = {
-                to:to,
-                amount:String(parseFloat(amount)),
-                data:callData,
-                id: String(Date.now()),
-                label: token.contract_ticker_symbol
-            }
-            await addElementToBatch(transaction);
+        const newAmount = String(parseFloat(amount) * (10**token.contract_decimals));
+        const callData = await getCallData(address, newAmount);
+        const value = '0';
+        const to = token.contract_address;
+        const transaction: BatchTransactionItem = {
+            to:address,
+            amount:amount,
+            id: String(Date.now()),
+            token: token,
         }
+        await addElementToBatch(transaction);
         setValue('batch')
     }
 

@@ -32,7 +32,7 @@ export const Item = ({ transaction, setTransaction }: Props) => {
                     {transaction.to.slice(0,5)}....{transaction.to.slice(-5)}
                 </div>
                 <div style={{display:'flex', justifyContent:'center', flexDirection:'column', fontSize:'11px', fontWeight:'200', color:'#c0c0c0'}}>
-                        {parseFloat(transaction.amount).toFixed(3)} {transaction.label}
+                    {parseFloat(transaction.amount).toFixed(3)} {transaction.token.contract_ticker_symbol}
                 </div>
             </div>
             <div style={{display:'flex', justifyContent:'center', flexDirection:'column', marginRight:'10px'}}>
